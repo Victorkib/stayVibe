@@ -108,7 +108,7 @@ export default function RegisterPage() {
       <div className="w-full max-w-md">
         {/* Back Button */}
         <Link
-          href="/"
+          to="/"
           className="inline-flex items-center text-gray-600 hover:text-gray-900 mb-6"
         >
           <ArrowLeft className="h-4 w-4 mr-2" />
@@ -343,14 +343,14 @@ export default function RegisterPage() {
                   <Label htmlFor="terms" className="text-sm leading-relaxed">
                     I agree to the{' '}
                     <Link
-                      href="/terms"
+                      to="/terms"
                       className="text-rose-600 hover:text-rose-700"
                     >
                       Terms of Service
                     </Link>{' '}
                     and{' '}
                     <Link
-                      href="/privacy"
+                      to="/privacy"
                       className="text-rose-600 hover:text-rose-700"
                     >
                       Privacy Policy

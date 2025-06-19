@@ -84,7 +84,7 @@ export default function Footer() {
             <ul className="space-y-2">
               <li>
                 <a
-                  href="#"
+                  to="#"
                   className="text-gray-300 hover:text-white transition-colors"
                 >
                   About Us
@@ -92,7 +92,7 @@ export default function Footer() {
               </li>
               <li>
                 <a
-                  href="#"
+                  to="#"
                   className="text-gray-300 hover:text-white transition-colors"
                 >
                   How It Works
@@ -100,7 +100,7 @@ export default function Footer() {
               </li>
               <li>
                 <a
-                  href="#"
+                  to="#"
                   className="text-gray-300 hover:text-white transition-colors"
                 >
                   Careers
@@ -108,7 +108,7 @@ export default function Footer() {
               </li>
               <li>
                 <a
-                  href="#"
+                  to="#"
                   className="text-gray-300 hover:text-white transition-colors"
                 >
                   Press
@@ -116,7 +116,7 @@ export default function Footer() {
               </li>
               <li>
                 <a
-                  href="#"
+                  to="#"
                   className="text-gray-300 hover:text-white transition-colors"
                 >
                   Blog
@@ -131,7 +131,7 @@ export default function Footer() {
             <ul className="space-y-2">
               <li>
                 <a
-                  href="#"
+                  to="#"
                   className="text-gray-300 hover:text-white transition-colors"
                 >
                   Help Center
@@ -139,7 +139,7 @@ export default function Footer() {
               </li>
               <li>
                 <a
-                  href="#"
+                  to="#"
                   className="text-gray-300 hover:text-white transition-colors"
                 >
                   Safety Information
@@ -147,7 +147,7 @@ export default function Footer() {
               </li>
               <li>
                 <a
-                  href="#"
+                  to="#"
                   className="text-gray-300 hover:text-white transition-colors"
                 >
                   Cancellation Options
@@ -155,7 +155,7 @@ export default function Footer() {
               </li>
               <li>
                 <a
-                  href="#"
+                  to="#"
                   className="text-gray-300 hover:text-white transition-colors"
                 >
                   Community Support
@@ -163,7 +163,7 @@ export default function Footer() {
               </li>
               <li>
                 <a
-                  href="#"
+                  to="#"
                   className="text-gray-300 hover:text-white transition-colors"
                 >
                   Report Issue
@@ -200,19 +200,19 @@ export default function Footer() {
             </div>
             <div className="flex space-x-6 text-sm">
               <a
-                href="#"
+                to="#"
                 className="text-gray-400 hover:text-white transition-colors"
               >
                 Privacy Policy
               </a>
               <a
-                href="#"
+                to="#"
                 className="text-gray-400 hover:text-white transition-colors"
               >
                 Terms of Service
               </a>
               <a
-                href="#"
+                to="#"
                 className="text-gray-400 hover:text-white transition-colors"
               >
                 Cookie Policy
