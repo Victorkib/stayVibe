@@ -78,7 +78,7 @@ export default function HostSection() {
           {/* Right Content */}
           <div className="relative">
             <img
-              src="/placeholder.svg?height=600&width=500"
+              src="/img/airbnb1_1.avif?height=600&width=500"
               alt="Happy host"
               className="w-full h-96 object-cover rounded-2xl shadow-2xl"
             />

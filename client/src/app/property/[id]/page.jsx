@@ -35,6 +35,7 @@ import {
   PopoverContent,
   PopoverTrigger,
 } from '../../../components/ui/popover';
+import PaystackCheckout from '../../components/PaystackCheckout';
 
 // Mock property data
 const propertyData = {
@@ -45,12 +46,11 @@ const propertyData = {
   rating: 4.9,
   reviews: 127,
   images: [
-    '/placeholder.svg?height=600&width=800',
-    '/placeholder.svg?height=600&width=800',
-    '/placeholder.svg?height=600&width=800',
-    '/placeholder.svg?height=600&width=800',
-    '/placeholder.svg?height=600&width=800',
-  ],
+      '/img/airbnb1_1.avif',
+      '/img/airbnb1_2.avif',
+      '/img/airbnb1_3.avif',
+      '/img/airbnb1_4.avif',
+    ],
   amenities: [
     'Wifi',
     'Pool',
@@ -467,12 +467,13 @@ export default function PropertyDetailPage() {
                 </Popover>
 
                 {/* Reserve Button */}
-                <Button
+                {/* <Button
                   size="lg"
                   className="w-full bg-rose-500 hover:bg-rose-600 text-white"
                 >
                   Reserve
-                </Button>
+                </Button> */}
+                <PaystackCheckout/>
 
                 <p className="text-center text-sm text-gray-600">
                   You won't be charged yet

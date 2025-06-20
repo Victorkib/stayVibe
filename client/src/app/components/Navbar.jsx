@@ -86,7 +86,7 @@ export default function Navbar() {
                   </Avatar>
                 </Button>
               </DropdownMenuTrigger>
-              <DropdownMenuContent align="end" className="w-48">
+              <DropdownMenuContent align="end" className="w-48 bg-white shadow-2xl">
                 {isAuthenticated ? (
                   <>
                     <DropdownMenuItem onClick={() => navigate('/dashboard')}>

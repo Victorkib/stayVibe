@@ -1,5 +1,8 @@
 @import 'tailwindcss';
 /* Base theme variables */
+*{
+  border: none;
+}
 :root {
   --background-primary: #ffffff;
   --background-secondary: #f9fafb;

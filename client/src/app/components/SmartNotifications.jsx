@@ -80,7 +80,7 @@ export default function SmartNotifications() {
       </Button>
 
       {isOpen && (
-        <div className="absolute right-0 top-12 w-96 z-50">
+        <div className="absolute right-0 top-12 w-96 z-50 bg-white shadow-2xl">
           <Card className="shadow-2xl border-2">
             <div className="p-4 border-b">
               <div className="flex justify-between items-center">
@@ -94,7 +94,7 @@ export default function SmartNotifications() {
                 </Button>
               </div>
             </div>
-            <CardContent className="p-0 max-h-96 overflow-y-auto">
+            <CardContent className="p-0 max-h-96 overflow-y-auto ">
               {notifications.length === 0 ? (
                 <div className="p-6 text-center text-gray-500">
                   <Bell className="h-12 w-12 mx-auto mb-2 opacity-50" />
