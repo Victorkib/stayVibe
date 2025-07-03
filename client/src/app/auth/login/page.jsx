@@ -39,7 +39,7 @@ export default function LoginPage() {
       const hasCompletedOnboarding = localStorage.getItem('userProfile');
 
       if (hasCompletedOnboarding) {
-        navigate('/dashboard');
+        navigate('/');
       } else {
         navigate('/onboarding');
       }

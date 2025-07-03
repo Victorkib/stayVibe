@@ -233,7 +233,7 @@ export default function OnboardingPage() {
   const completeOnboarding = () => {
     // Save user profile and redirect to dashboard
     localStorage.setItem('userProfile', JSON.stringify(userProfile));
-    navigate('/dashboard');
+    navigate('/');
   };
 
   const renderStepContent = () => {
