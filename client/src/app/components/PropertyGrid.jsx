@@ -469,7 +469,7 @@ export default function PropertyGrid({
                   <span className="text-sm text-gray-600"> / night</span>
                 </div>
                 <div className="text-sm text-gray-600">
-                  Host: {property.host.name.split(' ')[0]}
+                  Host: {property?.host && property.host.name.split(' ')[0]}
                 </div>
               </div>
             </CardContent>

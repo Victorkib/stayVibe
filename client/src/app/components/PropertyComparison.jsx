@@ -21,7 +21,7 @@ import { useNavigate } from 'react-router-dom';
 
 export default function PropertyComparison({ properties, onClose }) {
   const [selectedProperties, setSelectedProperties] = useState(
-    properties.slice(0, 3)
+    properties?.slice(0, 3) || []
   );
   const navigate = useNavigate();
 
@@ -45,16 +45,33 @@ export default function PropertyComparison({ properties, onClose }) {
   };
 
   const handleViewProperty = (propertyId) => {
-    const isAuthenticated = localStorage.getItem('isAuthenticated');
-    if (isAuthenticated) {
+    try {
+      const isAuthenticated = localStorage.getItem('isAuthenticated');
+      if (isAuthenticated) {
+        navigate(`/property/${propertyId}`);
+      } else {
+        localStorage.setItem('returnUrl', `/property/${propertyId}`);
+        navigate('/auth/login');
+      }
+    } catch (error) {
+      console.error('Error handling view property:', error);
+      // Fallback navigation without localStorage
       navigate(`/property/${propertyId}`);
-    } else {
-      localStorage.setItem('returnUrl', `/property/${propertyId}`);
-      navigate('/auth/login');
     }
   };
 
-  if (selectedProperties.length === 0) {
+  const getHostInitial = (host) => {
+    if (!host) return 'H';
+    const hostString = typeof host === 'string' ? host : String(host);
+    return hostString.charAt(0).toUpperCase();
+  };
+
+  const getHostName = (host) => {
+    if (!host) return 'Host';
+    return typeof host === 'string' ? host : String(host);
+  };
+
+  if (!selectedProperties || selectedProperties.length === 0) {
     return (
       <div className="fixed inset-0 bg-black bg-opacity-50 z-50 flex items-center justify-center p-4">
         <Card className="w-full max-w-md">
@@ -117,14 +134,14 @@ export default function PropertyComparison({ properties, onClose }) {
                   <div className="relative">
                     <img
                       src={property.images?.[0] || '/placeholder.svg'}
-                      alt={property.title}
+                      alt={property.title || 'Property'}
                       className="w-full h-48 object-cover rounded-t-lg"
                       onError={(e) => {
                         e.target.src = '/placeholder.svg?height=192&width=400';
                       }}
                     />
                     <Badge className="absolute top-3 left-3 bg-white text-gray-800 shadow-lg">
-                      ${property.price}/night
+                      ${property.price || 0}/night
                     </Badge>
                     {property.featured && (
                       <Badge className="absolute top-3 right-12 bg-rose-500 text-white shadow-lg">
@@ -137,17 +154,21 @@ export default function PropertyComparison({ properties, onClose }) {
                     {/* Basic Info */}
                     <div>
                       <h3 className="font-semibold text-lg line-clamp-2 mb-2">
-                        {property.title}
+                        {property.title || 'Untitled Property'}
                       </h3>
                       <div className="flex items-center gap-2 text-sm text-gray-600 mb-2">
                         <MapPin className="h-3 w-3 flex-shrink-0" />
-                        <span className="truncate">{property.location}</span>
+                        <span className="truncate">
+                          {property.location || 'Location not specified'}
+                        </span>
                       </div>
                       <div className="flex items-center gap-2">
                         <Star className="h-4 w-4 text-yellow-400 fill-current" />
-                        <span className="font-medium">{property.rating}</span>
+                        <span className="font-medium">
+                          {property.rating || 'N/A'}
+                        </span>
                         <span className="text-sm text-gray-600">
-                          ({property.reviews} reviews)
+                          ({property.reviews || 0} reviews)
                         </span>
                       </div>
                     </div>
@@ -175,20 +196,30 @@ export default function PropertyComparison({ properties, onClose }) {
                     <div className="space-y-2">
                       <h4 className="font-medium text-sm">Amenities</h4>
                       <div className="flex flex-wrap gap-1">
-                        {property.amenities?.slice(0, 4).map((amenity) => (
-                          <Badge
-                            key={amenity}
-                            variant="secondary"
-                            className="text-xs flex items-center gap-1 bg-gray-100 hover:bg-gray-200"
-                          >
-                            {getAmenityIcon(amenity)}
-                            {amenity}
-                          </Badge>
-                        ))}
-                        {property.amenities?.length > 4 && (
-                          <Badge variant="outline" className="text-xs">
-                            +{property.amenities.length - 4} more
-                          </Badge>
+                        {property.amenities && property.amenities.length > 0 ? (
+                          <>
+                            {property.amenities
+                              .slice(0, 4)
+                              .map((amenity, index) => (
+                                <Badge
+                                  key={`${amenity}-${index}`}
+                                  variant="secondary"
+                                  className="text-xs flex items-center gap-1 bg-gray-100 hover:bg-gray-200"
+                                >
+                                  {getAmenityIcon(amenity)}
+                                  {amenity}
+                                </Badge>
+                              ))}
+                            {property.amenities.length > 4 && (
+                              <Badge variant="outline" className="text-xs">
+                                +{property.amenities.length - 4} more
+                              </Badge>
+                            )}
+                          </>
+                        ) : (
+                          <span className="text-xs text-gray-500">
+                            No amenities listed
+                          </span>
                         )}
                       </div>
                     </div>
@@ -201,10 +232,12 @@ export default function PropertyComparison({ properties, onClose }) {
                       <div className="flex items-center gap-2">
                         <div className="w-6 h-6 bg-gradient-to-r from-rose-400 to-pink-500 rounded-full flex items-center justify-center">
                           <span className="text-white text-xs font-bold">
-                            {property.host?.charAt(0) || 'H'}
+                            {getHostInitial(property.host)}
                           </span>
                         </div>
-                        <span className="text-sm">{property.host}</span>
+                        <span className="text-sm">
+                          {getHostName(property.host)}
+                        </span>
                         {property.superhost && (
                           <Badge
                             variant="secondary"
@@ -249,7 +282,11 @@ export default function PropertyComparison({ properties, onClose }) {
                             className="border border-gray-200 p-4 text-left font-semibold text-gray-900 min-w-[200px]"
                           >
                             <div className="truncate">
-                              {property.title.substring(0, 30)}...
+                              {property.title
+                                ? property.title.length > 30
+                                  ? `${property.title.substring(0, 30)}...`
+                                  : property.title
+                                : 'Untitled Property'}
                             </div>
                           </th>
                         ))}
@@ -266,7 +303,7 @@ export default function PropertyComparison({ properties, onClose }) {
                             className="border border-gray-200 p-4"
                           >
                             <span className="text-lg font-bold text-green-600">
-                              ${property.price}
+                              ${property.price || 0}
                             </span>
                           </td>
                         ))}
@@ -283,10 +320,10 @@ export default function PropertyComparison({ properties, onClose }) {
                             <div className="flex items-center gap-1">
                               <Star className="h-4 w-4 text-yellow-400 fill-current" />
                               <span className="font-medium">
-                                {property.rating}
+                                {property.rating || 'N/A'}
                               </span>
                               <span className="text-sm text-gray-500">
-                                ({property.reviews} reviews)
+                                ({property.reviews || 0} reviews)
                               </span>
                             </div>
                           </td>
@@ -304,7 +341,7 @@ export default function PropertyComparison({ properties, onClose }) {
                             <div className="flex items-center gap-1">
                               <MapPin className="h-3 w-3 text-gray-400" />
                               <span className="text-sm">
-                                {property.location}
+                                {property.location || 'Not specified'}
                               </span>
                             </div>
                           </td>
@@ -336,7 +373,7 @@ export default function PropertyComparison({ properties, onClose }) {
                             className="border border-gray-200 p-4"
                           >
                             <div className="flex items-center gap-2">
-                              <span>{property.host}</span>
+                              <span>{getHostName(property.host)}</span>
                               {property.superhost && (
                                 <Badge
                                   variant="secondary"
@@ -359,21 +396,33 @@ export default function PropertyComparison({ properties, onClose }) {
                             className="border border-gray-200 p-4"
                           >
                             <div className="flex flex-wrap gap-1">
-                              {property.amenities
-                                ?.slice(0, 3)
-                                .map((amenity) => (
-                                  <Badge
-                                    key={amenity}
-                                    variant="outline"
-                                    className="text-xs"
-                                  >
-                                    {amenity}
-                                  </Badge>
-                                ))}
-                              {property.amenities?.length > 3 && (
-                                <Badge variant="outline" className="text-xs">
-                                  +{property.amenities.length - 3}
-                                </Badge>
+                              {property.amenities &&
+                              property.amenities.length > 0 ? (
+                                <>
+                                  {property.amenities
+                                    .slice(0, 3)
+                                    .map((amenity, index) => (
+                                      <Badge
+                                        key={`${amenity}-${index}`}
+                                        variant="outline"
+                                        className="text-xs"
+                                      >
+                                        {amenity}
+                                      </Badge>
+                                    ))}
+                                  {property.amenities.length > 3 && (
+                                    <Badge
+                                      variant="outline"
+                                      className="text-xs"
+                                    >
+                                      +{property.amenities.length - 3}
+                                    </Badge>
+                                  )}
+                                </>
+                              ) : (
+                                <span className="text-xs text-gray-500">
+                                  None listed
+                                </span>
                               )}
                             </div>
                           </td>
