@@ -231,9 +231,20 @@ export default function OnboardingPage() {
   };
 
   const completeOnboarding = () => {
-    // Save user profile and redirect to dashboard
+    // Save user profile
     localStorage.setItem('userProfile', JSON.stringify(userProfile));
-    navigate('/');
+
+    // Check for return URL first
+    const returnUrl = localStorage.getItem('returnUrl');
+
+    if (returnUrl) {
+      // Clear the return URL and redirect to it
+      localStorage.removeItem('returnUrl');
+      navigate(returnUrl);
+    } else {
+      // Default redirect to home
+      navigate('/');
+    }
   };
 
   const renderStepContent = () => {
@@ -652,7 +663,7 @@ export default function OnboardingPage() {
             variant="outline"
             onClick={prevStep}
             disabled={currentStep === 1}
-            className="flex items-center gap-2"
+            className="flex items-center gap-2 bg-transparent"
           >
             <ChevronLeft className="h-4 w-4" />
             Previous

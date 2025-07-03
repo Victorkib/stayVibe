@@ -55,7 +55,9 @@ export default function PropertyGrid({
 
   // Update properties when filters change
   useEffect(() => {
+    console.log('Applying filters:', filters); // Debug log
     const filteredResults = searchProperties(filters);
+    console.log('Filtered results:', filteredResults); // Debug log
     setProperties(filteredResults);
   }, [filters]);
 

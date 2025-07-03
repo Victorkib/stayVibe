@@ -35,13 +35,22 @@ export default function LoginPage() {
       localStorage.setItem('isAuthenticated', 'true');
       localStorage.setItem('userEmail', formData.email);
 
-      // Check if user has completed onboarding
-      const hasCompletedOnboarding = localStorage.getItem('userProfile');
+      // Check for return URL first
+      const returnUrl = localStorage.getItem('returnUrl');
 
-      if (hasCompletedOnboarding) {
-        navigate('/');
+      if (returnUrl) {
+        // Clear the return URL and redirect to it
+        localStorage.removeItem('returnUrl');
+        navigate(returnUrl);
       } else {
-        navigate('/onboarding');
+        // Check if user has completed onboarding
+        const hasCompletedOnboarding = localStorage.getItem('userProfile');
+
+        if (hasCompletedOnboarding) {
+          navigate('/');
+        } else {
+          navigate('/onboarding');
+        }
       }
       setIsLoading(false);
     }, 1500);
@@ -53,7 +62,17 @@ export default function LoginPage() {
     setTimeout(() => {
       localStorage.setItem('isAuthenticated', 'true');
       localStorage.setItem('userEmail', `user@${provider}.com`);
-      navigate('/onboarding');
+
+      // Check for return URL first
+      const returnUrl = localStorage.getItem('returnUrl');
+
+      if (returnUrl) {
+        // Clear the return URL and redirect to it
+        localStorage.removeItem('returnUrl');
+        navigate(returnUrl);
+      } else {
+        navigate('/onboarding');
+      }
       setIsLoading(false);
     }, 1000);
   };
@@ -86,7 +105,7 @@ export default function LoginPage() {
             <div className="space-y-3">
               <Button
                 variant="outline"
-                className="w-full h-12"
+                className="w-full h-12 bg-transparent"
                 onClick={() => handleSocialLogin('google')}
                 disabled={isLoading}
               >
@@ -113,7 +132,7 @@ export default function LoginPage() {
 
               <Button
                 variant="outline"
-                className="w-full h-12"
+                className="w-full h-12 bg-transparent"
                 onClick={() => handleSocialLogin('facebook')}
                 disabled={isLoading}
               >
@@ -129,7 +148,7 @@ export default function LoginPage() {
 
               <Button
                 variant="outline"
-                className="w-full h-12"
+                className="w-full h-12 bg-transparent"
                 onClick={() => handleSocialLogin('apple')}
                 disabled={isLoading}
               >

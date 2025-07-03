@@ -14,7 +14,7 @@ import BookingPage from './app/booking/[id]/page';
 import BookingConfirmationPage from './app/booking/confirmation/[id]/page';
 import WishlistPage from './app/wishlist/page';
 import HelpPage from './app/help/page';
-// import SettingsPage from './app/settings/page';
+import DestinationsPage from './app/components/DestinationsPage';
 
 function App() {
   return (
@@ -28,13 +28,19 @@ function App() {
         <Route path="/auth/register" element={<RegisterPage />} />
         <Route path="/auth/forgot-password" element={<ForgotPasswordPage />} />
 
+        {/* Destinations Routes */}
+        <Route path="/destinations" element={<DestinationsPage />} />
+        <Route
+          path="/destinations/:destination"
+          element={<DestinationsPage />}
+        />
+
         {/* Protected Routes */}
         <Route path="/dashboard" element={<DashboardPage />} />
         <Route path="/onboarding" element={<OnboardingPage />} />
         <Route path="/bookings" element={<BookingsPage />} />
         <Route path="/profile" element={<ProfilePage />} />
         <Route path="/wishlist" element={<WishlistPage />} />
-        {/* <Route path="/settings" element={<SettingsPage />} /> */}
         <Route path="/help" element={<HelpPage />} />
 
         {/* Property Routes */}

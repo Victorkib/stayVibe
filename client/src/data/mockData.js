@@ -1,7 +1,7 @@
 // Centralized Mock Data for DewdropBnb Application
 // This file contains all dummy data used across the application
 
-// Host profiles
+// Host profiles - Enhanced with new hosts
 export const mockHosts = {
   1: {
     id: 1,
@@ -57,6 +57,88 @@ export const mockHosts = {
     languages: ['English', 'Spanish'],
     about:
       'History buff and local guide. My townhouse is perfect for exploring the historic district.',
+  },
+  // New hosts for additional destinations
+  5: {
+    id: 5,
+    name: 'Dimitris Papadopoulos',
+    avatar: '/user.png',
+    superhost: true,
+    joinedYear: 2016,
+    reviews: 312,
+    responseRate: 99,
+    responseTime: 'within an hour',
+    verified: true,
+    languages: ['English', 'Greek'],
+    about:
+      'Local Santorini host passionate about sharing the beauty of our island.',
+  },
+  6: {
+    id: 6,
+    name: 'Made Sutrisna',
+    avatar: '/user.png',
+    superhost: true,
+    joinedYear: 2015,
+    reviews: 445,
+    responseRate: 98,
+    responseTime: 'within an hour',
+    verified: true,
+    languages: ['English', 'Indonesian'],
+    about: 'Balinese host dedicated to sharing authentic island experiences.',
+  },
+  7: {
+    id: 7,
+    name: 'Ahmed Al-Rashid',
+    avatar: '/user.png',
+    superhost: false,
+    joinedYear: 2019,
+    reviews: 156,
+    responseRate: 95,
+    responseTime: 'within a few hours',
+    verified: true,
+    languages: ['English', 'Arabic'],
+    about:
+      'Dubai resident passionate about luxury hospitality and local culture.',
+  },
+  8: {
+    id: 8,
+    name: 'Marco Benedetti',
+    avatar: '/user.png',
+    superhost: true,
+    joinedYear: 2014,
+    reviews: 389,
+    responseRate: 99,
+    responseTime: 'within an hour',
+    verified: true,
+    languages: ['English', 'Italian'],
+    about:
+      'Third-generation winemaker sharing the beauty of Tuscan countryside.',
+  },
+  9: {
+    id: 9,
+    name: 'Sophie Dubois',
+    avatar: '/user.png',
+    superhost: true,
+    joinedYear: 2017,
+    reviews: 234,
+    responseRate: 97,
+    responseTime: 'within an hour',
+    verified: true,
+    languages: ['English', 'French'],
+    about: 'Parisian artist sharing the magic of Montmartre with travelers.',
+  },
+  10: {
+    id: 10,
+    name: 'Hiroshi Tanaka',
+    avatar: '/user.png',
+    superhost: false,
+    joinedYear: 2018,
+    reviews: 178,
+    responseRate: 94,
+    responseTime: 'within a few hours',
+    verified: true,
+    languages: ['English', 'Japanese'],
+    about: 'Tokyo local passionate about modern Japanese culture and design.',
   },
 };
 
@@ -161,7 +243,7 @@ export const mockHostBenefits = [
   },
 ];
 
-// Complete property data
+// Complete property data - Enhanced with new properties
 export const mockProperties = {
   1: {
     id: 1,
@@ -196,6 +278,7 @@ export const mockProperties = {
     guests: 8,
     beds: 5,
     featured: true,
+    destination: 'Malibu, California',
     checkInTime: '3:00 PM',
     checkOutTime: '11:00 AM',
     description: `Welcome to our stunning beachfront villa in Malibu! This luxurious property offers breathtaking ocean views, direct beach access, and world-class amenities. Perfect for families, couples, or groups looking for an unforgettable getaway.
@@ -235,6 +318,7 @@ export const mockProperties = {
     guests: 4,
     beds: 2,
     featured: false,
+    destination: 'New York, USA',
     checkInTime: '4:00 PM',
     checkOutTime: '11:00 AM',
     description: `Experience the heart of Manhattan from this sleek, modern apartment with stunning city views. Located in a luxury building with 24/7 doorman service and rooftop access.
@@ -280,6 +364,7 @@ export const mockProperties = {
     guests: 6,
     beds: 4,
     featured: true,
+    destination: 'Aspen, Colorado',
     checkInTime: '4:00 PM',
     checkOutTime: '10:00 AM',
     description: `Escape to this charming mountain cabin nestled in the Colorado Rockies. Perfect for ski trips, hiking adventures, or simply relaxing in nature.
@@ -320,6 +405,7 @@ export const mockProperties = {
     guests: 6,
     beds: 4,
     featured: false,
+    destination: 'Boston, Massachusetts',
     checkInTime: '3:00 PM',
     checkOutTime: '11:00 AM',
     description: `Step back in time in this beautifully preserved Victorian townhouse in Boston's prestigious Back Bay neighborhood. Rich in history and character, with modern comforts.
@@ -334,6 +420,298 @@ export const mockProperties = {
     ],
     cancellationPolicy: 'Flexible cancellation policy',
     coordinates: { lat: 42.3505, lng: -71.0759 },
+  },
+  // New properties for additional destinations
+  101: {
+    id: 101,
+    title: 'Luxury Cave House with Caldera Views',
+    location: 'Oia, Santorini, Greece',
+    shortLocation: 'Santorini, Greece',
+    price: 520,
+    rating: 4.9,
+    reviews: 89,
+    images: [
+      '/img/santorini1_1.avif',
+      '/img/santorini1_2.avif',
+      '/img/santorini1_3.avif',
+    ],
+    amenities: ['Wifi', 'Pool', 'Sea View', 'Terrace', 'Kitchen', 'Hot Tub'],
+    type: 'Villa',
+    hostId: 5,
+    host: mockHosts[5],
+    superhost: true,
+    instantBook: true,
+    bedrooms: 2,
+    bathrooms: 2,
+    guests: 4,
+    beds: 2,
+    featured: true,
+    destination: 'Santorini, Greece',
+    checkInTime: '3:00 PM',
+    checkOutTime: '11:00 AM',
+    description: `Experience the magic of Santorini from this stunning cave house carved into the cliffs of Oia. Wake up to breathtaking caldera views and world-famous sunsets right from your private terrace.
+
+This traditional Cycladic home features modern amenities while maintaining its authentic charm. The infinity pool seems to merge with the Aegean Sea, creating an unforgettable backdrop for your Greek island getaway.`,
+    houseRules: [
+      'No smoking',
+      'No parties or events',
+      'Respect quiet hours',
+      'Maximum 4 guests',
+    ],
+    cancellationPolicy: 'Moderate cancellation policy',
+    coordinates: { lat: 36.4618, lng: 25.3753 },
+  },
+  102: {
+    id: 102,
+    title: 'Traditional Windmill with Sunset Views',
+    location: 'Imerovigli, Santorini, Greece',
+    shortLocation: 'Santorini, Greece',
+    price: 380,
+    rating: 4.8,
+    reviews: 156,
+    images: [
+      '/img/santorini2_1.avif',
+      '/img/santorini2_2.avif',
+      '/img/santorini2_3.avif',
+    ],
+    amenities: ['Wifi', 'Terrace', 'Sea View', 'Kitchen', 'Historic'],
+    type: 'House',
+    hostId: 5,
+    host: mockHosts[5],
+    superhost: true,
+    instantBook: false,
+    bedrooms: 1,
+    bathrooms: 1,
+    guests: 2,
+    beds: 1,
+    featured: false,
+    destination: 'Santorini, Greece',
+    checkInTime: '3:00 PM',
+    checkOutTime: '11:00 AM',
+    description: `Stay in a beautifully restored traditional windmill offering panoramic views of the caldera and the most spectacular sunsets in Santorini. This unique accommodation combines historical charm with modern comfort.`,
+    houseRules: [
+      'No smoking',
+      'No parties',
+      'Respect quiet hours',
+      'Maximum 2 guests',
+    ],
+    cancellationPolicy: 'Flexible cancellation policy',
+    coordinates: { lat: 36.4167, lng: 25.4167 },
+  },
+  103: {
+    id: 103,
+    title: 'Luxury Villa with Rice Field Views',
+    location: 'Ubud, Bali, Indonesia',
+    shortLocation: 'Bali, Indonesia',
+    price: 280,
+    rating: 4.9,
+    reviews: 203,
+    images: ['/img/bali1_1.avif', '/img/bali1_2.avif', '/img/bali1_3.avif'],
+    amenities: ['Wifi', 'Pool', 'Spa', 'Garden', 'Kitchen', 'Yoga Space'],
+    type: 'Villa',
+    hostId: 6,
+    host: mockHosts[6],
+    superhost: true,
+    instantBook: true,
+    bedrooms: 3,
+    bathrooms: 3,
+    guests: 6,
+    beds: 3,
+    featured: true,
+    destination: 'Bali, Indonesia',
+    checkInTime: '2:00 PM',
+    checkOutTime: '12:00 PM',
+    description: `Immerse yourself in the tranquility of Ubud's lush rice terraces from this stunning villa. Features include a private infinity pool, spa treatments, and daily yoga sessions in our dedicated pavilion.
+
+Wake up to the sounds of nature and enjoy authentic Balinese breakfast prepared by our local chef. Perfect for those seeking wellness, culture, and natural beauty.`,
+    houseRules: [
+      'No smoking indoors',
+      'Respect local customs',
+      'Quiet hours after 10 PM',
+      'Maximum 6 guests',
+    ],
+    cancellationPolicy: 'Moderate cancellation policy',
+    coordinates: { lat: -8.5069, lng: 115.2625 },
+  },
+  104: {
+    id: 104,
+    title: 'Beachfront Bungalow in Seminyak',
+    location: 'Seminyak, Bali, Indonesia',
+    shortLocation: 'Bali, Indonesia',
+    price: 180,
+    rating: 4.7,
+    reviews: 134,
+    images: ['/img/bali2_1.avif', '/img/bali2_2.avif', '/img/bali2_3.avif'],
+    amenities: ['Wifi', 'Beach Access', 'Pool', 'Kitchen', 'Surfboard'],
+    type: 'Bungalow',
+    hostId: 6,
+    host: mockHosts[6],
+    superhost: true,
+    instantBook: true,
+    bedrooms: 2,
+    bathrooms: 2,
+    guests: 4,
+    beds: 2,
+    featured: false,
+    destination: 'Bali, Indonesia',
+    checkInTime: '2:00 PM',
+    checkOutTime: '12:00 PM',
+    description: `Steps away from Seminyak's famous beach and vibrant nightlife, this charming bungalow offers the perfect blend of relaxation and excitement. Enjoy world-class surfing, beach clubs, and sunset cocktails.`,
+    houseRules: [
+      'No smoking indoors',
+      'Respect neighbors',
+      'Clean up after beach activities',
+      'Maximum 4 guests',
+    ],
+    cancellationPolicy: 'Flexible cancellation policy',
+    coordinates: { lat: -8.6905, lng: 115.1656 },
+  },
+  105: {
+    id: 105,
+    title: 'Luxury Penthouse with Burj Khalifa Views',
+    location: 'Downtown Dubai, UAE',
+    shortLocation: 'Dubai, UAE',
+    price: 650,
+    rating: 4.8,
+    reviews: 98,
+    images: ['/city/dubai.jpeg', '/img/dubai1_2.avif', '/img/dubai1_3.avif'],
+    amenities: ['Wifi', 'Pool', 'Gym', 'City View', 'Concierge', 'Valet'],
+    type: 'Apartment',
+    hostId: 7,
+    host: mockHosts[7],
+    superhost: false,
+    instantBook: true,
+    bedrooms: 3,
+    bathrooms: 3,
+    guests: 6,
+    beds: 3,
+    featured: true,
+    destination: 'Dubai, UAE',
+    checkInTime: '3:00 PM',
+    checkOutTime: '12:00 PM',
+    description: `Experience Dubai's skyline from this stunning penthouse with direct views of the Burj Khalifa and Dubai Fountain. Located in the heart of Downtown Dubai with access to world-class shopping and dining.
+
+Features include a private terrace, premium amenities, and concierge services to ensure an unforgettable stay in the city of gold.`,
+    houseRules: [
+      'No smoking',
+      'Respect local customs',
+      'Quiet hours after 11 PM',
+      'Maximum 6 guests',
+    ],
+    cancellationPolicy: 'Strict cancellation policy',
+    coordinates: { lat: 25.1972, lng: 55.2744 },
+  },
+  106: {
+    id: 106,
+    title: 'Historic Villa with Vineyard Views',
+    location: 'Chianti, Tuscany, Italy',
+    shortLocation: 'Tuscany, Italy',
+    price: 420,
+    rating: 4.9,
+    reviews: 167,
+    images: [
+      '/img/tuscany1_1.avif',
+      '/img/tuscany1_2.avif',
+      '/img/tuscany1_3.avif',
+    ],
+    amenities: [
+      'Wifi',
+      'Pool',
+      'Wine Cellar',
+      'Garden',
+      'Kitchen',
+      'Fireplace',
+    ],
+    type: 'Villa',
+    hostId: 8,
+    host: mockHosts[8],
+    superhost: true,
+    instantBook: false,
+    bedrooms: 4,
+    bathrooms: 3,
+    guests: 8,
+    beds: 4,
+    featured: true,
+    destination: 'Tuscany, Italy',
+    checkInTime: '4:00 PM',
+    checkOutTime: '10:00 AM',
+    description: `Escape to this 16th-century villa surrounded by rolling vineyards and olive groves in the heart of Chianti. Experience authentic Tuscan living with wine tastings, cooking classes, and breathtaking countryside views.
+
+The villa features original frescoes, a private wine cellar, and a infinity pool overlooking the vineyards. Perfect for wine lovers and those seeking authentic Italian culture.`,
+    houseRules: [
+      'No smoking indoors',
+      'Respect the historic property',
+      'Quiet hours after 10 PM',
+      'Maximum 8 guests',
+    ],
+    cancellationPolicy: 'Moderate cancellation policy',
+    coordinates: { lat: 43.5403, lng: 11.3168 },
+  },
+  107: {
+    id: 107,
+    title: 'Charming Montmartre Apartment',
+    location: 'Montmartre, Paris, France',
+    shortLocation: 'Paris, France',
+    price: 220,
+    rating: 4.6,
+    reviews: 89,
+    images: ['/img/paris1_1.avif', '/img/paris1_2.avif', '/img/paris1_3.avif'],
+    amenities: ['Wifi', 'Kitchen', 'Historic', 'City View', 'Balcony'],
+    type: 'Apartment',
+    hostId: 9,
+    host: mockHosts[9],
+    superhost: true,
+    instantBook: true,
+    bedrooms: 1,
+    bathrooms: 1,
+    guests: 2,
+    beds: 1,
+    featured: false,
+    destination: 'Paris, France',
+    checkInTime: '3:00 PM',
+    checkOutTime: '11:00 AM',
+    description: `Experience the bohemian charm of Montmartre from this cozy apartment just steps from Sacré-Cœur. Enjoy authentic Parisian living in the historic artists' quarter with cobblestone streets and charming cafés.`,
+    houseRules: [
+      'No smoking',
+      'Quiet hours after 10 PM',
+      'Respect neighbors',
+      'Maximum 2 guests',
+    ],
+    cancellationPolicy: 'Flexible cancellation policy',
+    coordinates: { lat: 48.8867, lng: 2.3431 },
+  },
+  108: {
+    id: 108,
+    title: 'Modern Shibuya Loft',
+    location: 'Shibuya, Tokyo, Japan',
+    shortLocation: 'Tokyo, Japan',
+    price: 190,
+    rating: 4.7,
+    reviews: 156,
+    images: ['/img/tokyo1_1.avif', '/img/tokyo1_2.avif', '/img/tokyo1_3.avif'],
+    amenities: ['Wifi', 'Kitchen', 'City View', 'Modern', 'Elevator'],
+    type: 'Loft',
+    hostId: 10,
+    host: mockHosts[10],
+    superhost: false,
+    instantBook: true,
+    bedrooms: 1,
+    bathrooms: 1,
+    guests: 2,
+    beds: 1,
+    featured: false,
+    destination: 'Tokyo, Japan',
+    checkInTime: '3:00 PM',
+    checkOutTime: '11:00 AM',
+    description: `Immerse yourself in Tokyo's energy from this sleek loft in the heart of Shibuya. Experience the famous crossing, cutting-edge fashion, and incredible dining just steps from your door.`,
+    houseRules: [
+      'No smoking',
+      'Remove shoes indoors',
+      'Quiet hours after 10 PM',
+      'Maximum 2 guests',
+    ],
+    cancellationPolicy: 'Moderate cancellation policy',
+    coordinates: { lat: 35.6598, lng: 139.7006 },
   },
 };
 
@@ -416,73 +794,213 @@ export const mockBookings = [
   },
 ];
 
-// Featured destinations data
+// Enhanced destinations data with new destinations
 export const mockDestinations = [
   {
     id: 1,
-    name: 'Paris, France',
+    name: 'Malibu, California',
     properties: 1200,
     image: '/city/paris.jpeg',
-    description: 'City of Light',
-    averagePrice: 180,
+    heroImage: '/city/malibu-hero.jpeg',
+    description: 'Luxury Beach Living',
+    longDescription:
+      'Experience the ultimate in luxury beach living with stunning ocean views, world-class dining, and exclusive beach access in this iconic California destination.',
+    averagePrice: 450,
     rating: 4.8,
     trending: true,
-    popularAmenities: ['WiFi', 'Kitchen', 'Historic'],
+    popularAmenities: ['Pool', 'Beach Access', 'Luxury'],
+    climate: 'Mediterranean',
+    bestTime: 'Year-round',
+    highlights: ['Malibu Pier', 'Zuma Beach', 'Getty Villa', 'Wine Tasting'],
   },
   {
     id: 2,
-    name: 'Tokyo, Japan',
+    name: 'New York, USA',
     properties: 890,
-    image: '/city/tokyo.jpeg',
-    description: 'Modern Metropolis',
-    averagePrice: 220,
+    image: '/city/newyork.jpeg',
+    heroImage: '/city/newyork-hero.jpeg',
+    description: 'The Big Apple',
+    longDescription:
+      'Immerse yourself in the energy of the city that never sleeps, with world-class museums, Broadway shows, and iconic landmarks around every corner.',
+    averagePrice: 180,
     rating: 4.9,
     trending: true,
-    popularAmenities: ['WiFi', 'Modern', 'City Center'],
+    popularAmenities: ['WiFi', 'Gym', 'City Views'],
+    climate: 'Continental',
+    bestTime: 'April - June, September - November',
+    highlights: [
+      'Times Square',
+      'Central Park',
+      'Statue of Liberty',
+      'Broadway',
+    ],
   },
   {
     id: 3,
-    name: 'New York, USA',
-    properties: 2100,
-    image: '/city/newyork.jpeg',
-    description: 'The Big Apple',
-    averagePrice: 280,
+    name: 'Aspen, Colorado',
+    properties: 650,
+    image: '/city/tokyo.jpeg',
+    heroImage: '/city/aspen-hero.jpeg',
+    description: 'Mountain Paradise',
+    longDescription:
+      'Discover world-class skiing, luxury mountain resorts, and breathtaking alpine scenery in this premier Colorado destination.',
+    averagePrice: 320,
     rating: 4.7,
     trending: false,
-    popularAmenities: ['WiFi', 'Gym', 'Rooftop'],
+    popularAmenities: ['Hot Tub', 'Mountain Views', 'Ski Access'],
+    climate: 'Alpine',
+    bestTime: 'December - March (Skiing), June - September (Hiking)',
+    highlights: [
+      'Aspen Mountain',
+      'Maroon Bells',
+      'Snowmass',
+      'Music Festival',
+    ],
   },
   {
     id: 4,
-    name: 'London, UK',
-    properties: 1500,
+    name: 'Boston, Massachusetts',
+    properties: 780,
     image: '/city/paris.jpeg',
+    heroImage: '/city/boston-hero.jpeg',
     description: 'Historic Capital',
-    averagePrice: 200,
+    longDescription:
+      'Walk through American history in this charming New England city, featuring cobblestone streets, historic landmarks, and world-renowned universities.',
+    averagePrice: 220,
     rating: 4.6,
     trending: false,
     popularAmenities: ['WiFi', 'Historic', 'Garden'],
+    climate: 'Continental',
+    bestTime: 'April - October',
+    highlights: [
+      'Freedom Trail',
+      'Harvard University',
+      'Fenway Park',
+      'Boston Tea Party Ships',
+    ],
   },
   {
     id: 5,
-    name: 'Bali, Indonesia',
-    properties: 650,
+    name: 'Paris, France',
+    properties: 1500,
     image: '/city/paris.jpeg',
-    description: 'Tropical Paradise',
-    averagePrice: 120,
+    heroImage: '/city/paris-hero.jpeg',
+    description: 'City of Light',
+    longDescription:
+      'Experience the romance and elegance of Paris with its iconic landmarks, world-class cuisine, and unparalleled art and culture.',
+    averagePrice: 200,
     rating: 4.9,
     trending: true,
-    popularAmenities: ['Pool', 'Beach', 'Spa'],
+    popularAmenities: ['WiFi', 'Kitchen', 'Historic'],
+    climate: 'Oceanic',
+    bestTime: 'April - June, September - October',
+    highlights: [
+      'Eiffel Tower',
+      'Louvre Museum',
+      'Notre-Dame',
+      'Champs-Élysées',
+    ],
   },
   {
     id: 6,
-    name: 'Dubai, UAE',
-    properties: 780,
-    image: '/city/paris.jpeg',
-    description: 'Desert Oasis',
-    averagePrice: 350,
+    name: 'Tokyo, Japan',
+    properties: 2100,
+    image: '/city/tokyo.jpeg',
+    heroImage: '/city/tokyo-hero.jpeg',
+    description: 'Modern Metropolis',
+    longDescription:
+      'Discover the perfect blend of ancient traditions and cutting-edge technology in this vibrant Japanese capital.',
+    averagePrice: 280,
     rating: 4.8,
     trending: false,
-    popularAmenities: ['Luxury', 'Pool', 'Desert'],
+    popularAmenities: ['WiFi', 'Modern', 'City Center'],
+    climate: 'Humid Subtropical',
+    bestTime: 'March - May, September - November',
+    highlights: [
+      'Shibuya Crossing',
+      'Tokyo Skytree',
+      'Senso-ji Temple',
+      'Tsukiji Market',
+    ],
+  },
+  // New destinations
+  {
+    id: 7,
+    name: 'Santorini, Greece',
+    properties: 450,
+    image: '/city/santorini.jpeg',
+    heroImage: '/city/santorini-hero.jpeg',
+    description: 'Stunning Sunsets',
+    longDescription:
+      'Experience breathtaking sunsets, white-washed buildings, and crystal-clear waters in this iconic Greek island paradise.',
+    averagePrice: 380,
+    rating: 4.9,
+    trending: true,
+    popularAmenities: ['Pool', 'Sea View', 'Terrace'],
+    climate: 'Mediterranean',
+    bestTime: 'April - October',
+    highlights: ['Oia Sunset', 'Red Beach', 'Wine Tasting', 'Volcanic Tours'],
+  },
+  {
+    id: 8,
+    name: 'Bali, Indonesia',
+    properties: 890,
+    image: '/city/bali.jpeg',
+    heroImage: '/city/bali-hero.jpeg',
+    description: 'Tropical Paradise',
+    longDescription:
+      'Immerse yourself in lush rice terraces, ancient temples, and pristine beaches in this Indonesian gem.',
+    averagePrice: 150,
+    rating: 4.8,
+    trending: true,
+    popularAmenities: ['Pool', 'Spa', 'Garden'],
+    climate: 'Tropical',
+    bestTime: 'April - October',
+    highlights: [
+      'Ubud Rice Terraces',
+      'Temple Tours',
+      'Beach Clubs',
+      'Yoga Retreats',
+    ],
+  },
+  {
+    id: 9,
+    name: 'Dubai, UAE',
+    properties: 650,
+    image: '/city/dubai.jpeg',
+    heroImage: '/city/dubai-hero.jpg',
+    description: 'Luxury & Innovation',
+    longDescription:
+      'Discover a city where modern luxury meets traditional Arabian culture, featuring world-class shopping and dining.',
+    averagePrice: 420,
+    rating: 4.7,
+    trending: false,
+    popularAmenities: ['Luxury', 'Pool', 'City View'],
+    climate: 'Desert',
+    bestTime: 'November - March',
+    highlights: ['Burj Khalifa', 'Desert Safari', 'Gold Souk', 'Marina'],
+  },
+  {
+    id: 10,
+    name: 'Tuscany, Italy',
+    properties: 720,
+    image: '/city/tuscany.jpeg',
+    heroImage: '/city/tuscany-hero.jpeg',
+    description: 'Rolling Hills & Wine',
+    longDescription:
+      'Escape to rolling vineyards, medieval hilltop towns, and world-renowned cuisine in the heart of Italy.',
+    averagePrice: 280,
+    rating: 4.8,
+    trending: true,
+    popularAmenities: ['Wine Cellar', 'Garden', 'Historic'],
+    climate: 'Mediterranean',
+    bestTime: 'April - October',
+    highlights: [
+      'Wine Tours',
+      'Florence Day Trips',
+      'Cooking Classes',
+      'Art Museums',
+    ],
   },
 ];
 
@@ -572,7 +1090,7 @@ export const getBookingById = (id) => {
   return bookings.find((booking) => booking.id.toString() === id.toString());
 };
 
-// Utility functions
+// Enhanced utility functions for destinations
 export const getPropertyById = (id) => {
   return mockProperties[Number.parseInt(id)];
 };
@@ -597,19 +1115,113 @@ export const getPropertiesByType = (type) => {
   );
 };
 
+// New destination-specific utility functions
+export const getAllDestinations = () => {
+  return mockDestinations;
+};
+
+export const getDestinationByName = (name) => {
+  return mockDestinations.find(
+    (dest) =>
+      dest.name.toLowerCase() === name.toLowerCase() ||
+      dest.name.toLowerCase().includes(name.toLowerCase())
+  );
+};
+
+export const getPropertiesByDestination = (destinationName) => {
+  return mockPropertiesArray.filter(
+    (property) =>
+      property.destination === destinationName ||
+      property.location.toLowerCase().includes(destinationName.toLowerCase()) ||
+      property.shortLocation
+        .toLowerCase()
+        .includes(destinationName.toLowerCase())
+  );
+};
+
+export const searchPropertiesByDestination = (
+  destinationName,
+  filters = {}
+) => {
+  let results = getPropertiesByDestination(destinationName);
+
+  if (filters.priceRange) {
+    results = results.filter(
+      (property) =>
+        property.price >= filters.priceRange[0] &&
+        property.price <= filters.priceRange[1]
+    );
+  }
+
+  if (filters.propertyType && filters.propertyType !== 'all') {
+    results = results.filter(
+      (property) =>
+        property.type.toLowerCase() === filters.propertyType.toLowerCase()
+    );
+  }
+
+  if (filters.amenities && filters.amenities.length > 0) {
+    results = results.filter((property) =>
+      filters.amenities.every((amenity) => property.amenities.includes(amenity))
+    );
+  }
+
+  if (filters.guests) {
+    results = results.filter((property) => property.guests >= filters.guests);
+  }
+
+  if (filters.rating) {
+    results = results.filter((property) => property.rating >= filters.rating);
+  }
+
+  return results;
+};
+
 export const searchProperties = (filters = {}) => {
   let results = [...mockPropertiesArray];
 
   if (filters.location) {
-    results = results.filter(
-      (property) =>
-        property.location
-          .toLowerCase()
-          .includes(filters.location.toLowerCase()) ||
-        property.shortLocation
-          .toLowerCase()
-          .includes(filters.location.toLowerCase())
-    );
+    const searchLocation = filters.location.toLowerCase();
+    results = results.filter((property) => {
+      const fullLocation = property.location.toLowerCase();
+      const shortLocation = property.shortLocation.toLowerCase();
+      const destination = property.destination?.toLowerCase() || '';
+
+      // Direct match
+      if (
+        fullLocation.includes(searchLocation) ||
+        shortLocation.includes(searchLocation) ||
+        destination.includes(searchLocation)
+      ) {
+        return true;
+      }
+
+      // Handle common location variations
+      const locationVariations = {
+        'new york, usa': ['new york', 'ny'],
+        'paris, france': ['paris'],
+        'tokyo, japan': ['tokyo'],
+        'london, uk': ['london'],
+        'bali, indonesia': ['bali'],
+        'dubai, uae': ['dubai'],
+        'santorini, greece': ['santorini'],
+        'tuscany, italy': ['tuscany'],
+      };
+
+      // Check if search matches any variation
+      for (const [key, variations] of Object.entries(locationVariations)) {
+        if (searchLocation.includes(key) || key.includes(searchLocation)) {
+          return variations.some(
+            (variation) =>
+              fullLocation.includes(variation) ||
+              shortLocation.includes(variation) ||
+              destination.includes(variation)
+          );
+        }
+      }
+
+      return false;
+    });
   }
 
   if (filters.priceRange) {
@@ -681,4 +1293,9 @@ export default {
   getFeaturedHostStories,
   getHostStoriesByHostId,
   getAllHostStories,
+  // New destination functions
+  getAllDestinations,
+  getDestinationByName,
+  getPropertiesByDestination,
+  searchPropertiesByDestination,
 };

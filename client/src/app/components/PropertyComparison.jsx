@@ -46,6 +46,11 @@ export default function PropertyComparison({ properties, onClose }) {
 
   const handleViewProperty = (propertyId) => {
     try {
+      const property = selectedProperties.find((p) => p.id === propertyId);
+      if (property) {
+        localStorage.setItem('currentProperty', JSON.stringify(property));
+      }
+
       const isAuthenticated = localStorage.getItem('isAuthenticated');
       if (isAuthenticated) {
         navigate(`/property/${propertyId}`);
@@ -55,20 +60,27 @@ export default function PropertyComparison({ properties, onClose }) {
       }
     } catch (error) {
       console.error('Error handling view property:', error);
-      // Fallback navigation without localStorage
       navigate(`/property/${propertyId}`);
     }
   };
 
-  const getHostInitial = (host) => {
-    if (!host) return 'H';
-    const hostString = typeof host === 'string' ? host : String(host);
-    return hostString.charAt(0).toUpperCase();
-  };
+  const getHostInfo = (host) => {
+    if (!host) return { initial: 'H', name: 'Host' };
 
-  const getHostName = (host) => {
-    if (!host) return 'Host';
-    return typeof host === 'string' ? host : String(host);
+    if (typeof host === 'object') {
+      return {
+        initial: host.name ? host.name.charAt(0).toUpperCase() : 'H',
+        name: host.name || 'Host',
+        superhost: host.superhost || false,
+      };
+    }
+
+    const hostString = String(host);
+    return {
+      initial: hostString.charAt(0).toUpperCase(),
+      name: hostString,
+      superhost: false,
+    };
   };
 
   if (!selectedProperties || selectedProperties.length === 0) {
@@ -117,149 +129,160 @@ export default function PropertyComparison({ properties, onClose }) {
           <div className="p-6">
             {/* Property Cards Grid */}
             <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 mb-8">
-              {selectedProperties.map((property) => (
-                <Card
-                  key={property.id}
-                  className="relative border-2 hover:shadow-lg transition-all"
-                >
-                  <Button
-                    variant="ghost"
-                    size="icon"
-                    className="absolute top-2 right-2 z-10 bg-white/80 hover:bg-white"
-                    onClick={() => removeProperty(property.id)}
+              {selectedProperties.map((property) => {
+                const hostInfo = getHostInfo(property.host);
+
+                return (
+                  <Card
+                    key={property.id}
+                    className="relative border-2 hover:shadow-lg transition-all"
                   >
-                    <X className="h-4 w-4" />
-                  </Button>
-
-                  <div className="relative">
-                    <img
-                      src={property.images?.[0] || '/placeholder.svg'}
-                      alt={property.title || 'Property'}
-                      className="w-full h-48 object-cover rounded-t-lg"
-                      onError={(e) => {
-                        e.target.src = '/placeholder.svg?height=192&width=400';
-                      }}
-                    />
-                    <Badge className="absolute top-3 left-3 bg-white text-gray-800 shadow-lg">
-                      ${property.price || 0}/night
-                    </Badge>
-                    {property.featured && (
-                      <Badge className="absolute top-3 right-12 bg-rose-500 text-white shadow-lg">
-                        Featured
-                      </Badge>
-                    )}
-                  </div>
-
-                  <CardContent className="p-4 space-y-4">
-                    {/* Basic Info */}
-                    <div>
-                      <h3 className="font-semibold text-lg line-clamp-2 mb-2">
-                        {property.title || 'Untitled Property'}
-                      </h3>
-                      <div className="flex items-center gap-2 text-sm text-gray-600 mb-2">
-                        <MapPin className="h-3 w-3 flex-shrink-0" />
-                        <span className="truncate">
-                          {property.location || 'Location not specified'}
-                        </span>
-                      </div>
-                      <div className="flex items-center gap-2">
-                        <Star className="h-4 w-4 text-yellow-400 fill-current" />
-                        <span className="font-medium">
-                          {property.rating || 'N/A'}
-                        </span>
-                        <span className="text-sm text-gray-600">
-                          ({property.reviews || 0} reviews)
-                        </span>
-                      </div>
-                    </div>
-
-                    <Separator />
-
-                    {/* Property Details */}
-                    <div className="space-y-2">
-                      <h4 className="font-medium text-sm">Property Details</h4>
-                      <div className="grid grid-cols-2 gap-2 text-sm">
-                        <div className="flex items-center gap-1">
-                          <Users className="h-3 w-3" />
-                          {property.guests || 4} guests
-                        </div>
-                        <div className="flex items-center gap-1">
-                          <Calendar className="h-3 w-3" />
-                          {property.bedrooms || 2} bedrooms
-                        </div>
-                      </div>
-                    </div>
-
-                    <Separator />
-
-                    {/* Amenities */}
-                    <div className="space-y-2">
-                      <h4 className="font-medium text-sm">Amenities</h4>
-                      <div className="flex flex-wrap gap-1">
-                        {property.amenities && property.amenities.length > 0 ? (
-                          <>
-                            {property.amenities
-                              .slice(0, 4)
-                              .map((amenity, index) => (
-                                <Badge
-                                  key={`${amenity}-${index}`}
-                                  variant="secondary"
-                                  className="text-xs flex items-center gap-1 bg-gray-100 hover:bg-gray-200"
-                                >
-                                  {getAmenityIcon(amenity)}
-                                  {amenity}
-                                </Badge>
-                              ))}
-                            {property.amenities.length > 4 && (
-                              <Badge variant="outline" className="text-xs">
-                                +{property.amenities.length - 4} more
-                              </Badge>
-                            )}
-                          </>
-                        ) : (
-                          <span className="text-xs text-gray-500">
-                            No amenities listed
-                          </span>
-                        )}
-                      </div>
-                    </div>
-
-                    <Separator />
-
-                    {/* Host Info */}
-                    <div className="space-y-2">
-                      <h4 className="font-medium text-sm">Host</h4>
-                      <div className="flex items-center gap-2">
-                        <div className="w-6 h-6 bg-gradient-to-r from-rose-400 to-pink-500 rounded-full flex items-center justify-center">
-                          <span className="text-white text-xs font-bold">
-                            {getHostInitial(property.host)}
-                          </span>
-                        </div>
-                        <span className="text-sm">
-                          {getHostName(property.host)}
-                        </span>
-                        {property.superhost && (
-                          <Badge
-                            variant="secondary"
-                            className="text-xs bg-yellow-100 text-yellow-800"
-                          >
-                            Superhost
-                          </Badge>
-                        )}
-                      </div>
-                    </div>
-
-                    {/* Action Button */}
                     <Button
-                      className="w-full bg-rose-500 hover:bg-rose-600 text-white"
-                      onClick={() => handleViewProperty(property.id)}
+                      variant="ghost"
+                      size="icon"
+                      className="absolute top-2 right-2 z-10 bg-white/80 hover:bg-white"
+                      onClick={() => removeProperty(property.id)}
                     >
-                      View Details
-                      <ArrowRight className="h-4 w-4 ml-2" />
+                      <X className="h-4 w-4" />
                     </Button>
-                  </CardContent>
-                </Card>
-              ))}
+
+                    <div className="relative">
+                      <img
+                        src={
+                          property.images?.[0] ||
+                          '/placeholder.svg?height=192&width=400'
+                        }
+                        alt={property.title || 'Property'}
+                        className="w-full h-48 object-cover rounded-t-lg"
+                        onError={(e) => {
+                          e.target.src =
+                            '/placeholder.svg?height=192&width=400';
+                        }}
+                      />
+                      <Badge className="absolute top-3 left-3 bg-white text-gray-800 shadow-lg">
+                        ${property.price || 0}/night
+                      </Badge>
+                      {property.featured && (
+                        <Badge className="absolute top-3 right-12 bg-rose-500 text-white shadow-lg">
+                          Featured
+                        </Badge>
+                      )}
+                    </div>
+
+                    <CardContent className="p-4 space-y-4">
+                      {/* Basic Info */}
+                      <div>
+                        <h3 className="font-semibold text-lg line-clamp-2 mb-2">
+                          {property.title || 'Untitled Property'}
+                        </h3>
+                        <div className="flex items-center gap-2 text-sm text-gray-600 mb-2">
+                          <MapPin className="h-3 w-3 flex-shrink-0" />
+                          <span className="truncate">
+                            {property.shortLocation ||
+                              property.location ||
+                              'Location not specified'}
+                          </span>
+                        </div>
+                        <div className="flex items-center gap-2">
+                          <Star className="h-4 w-4 text-yellow-400 fill-current" />
+                          <span className="font-medium">
+                            {property.rating || 'N/A'}
+                          </span>
+                          <span className="text-sm text-gray-600">
+                            ({property.reviews || 0} reviews)
+                          </span>
+                        </div>
+                      </div>
+
+                      <Separator />
+
+                      {/* Property Details */}
+                      <div className="space-y-2">
+                        <h4 className="font-medium text-sm">
+                          Property Details
+                        </h4>
+                        <div className="grid grid-cols-2 gap-2 text-sm">
+                          <div className="flex items-center gap-1">
+                            <Users className="h-3 w-3" />
+                            {property.guests || 4} guests
+                          </div>
+                          <div className="flex items-center gap-1">
+                            <Calendar className="h-3 w-3" />
+                            {property.bedrooms || 2} bedrooms
+                          </div>
+                        </div>
+                      </div>
+
+                      <Separator />
+
+                      {/* Amenities */}
+                      <div className="space-y-2">
+                        <h4 className="font-medium text-sm">Amenities</h4>
+                        <div className="flex flex-wrap gap-1">
+                          {property.amenities &&
+                          property.amenities.length > 0 ? (
+                            <>
+                              {property.amenities
+                                .slice(0, 4)
+                                .map((amenity, index) => (
+                                  <Badge
+                                    key={`${amenity}-${index}`}
+                                    variant="secondary"
+                                    className="text-xs flex items-center gap-1 bg-gray-100 hover:bg-gray-200"
+                                  >
+                                    {getAmenityIcon(amenity)}
+                                    {amenity}
+                                  </Badge>
+                                ))}
+                              {property.amenities.length > 4 && (
+                                <Badge variant="outline" className="text-xs">
+                                  +{property.amenities.length - 4} more
+                                </Badge>
+                              )}
+                            </>
+                          ) : (
+                            <span className="text-xs text-gray-500">
+                              No amenities listed
+                            </span>
+                          )}
+                        </div>
+                      </div>
+
+                      <Separator />
+
+                      {/* Host Info */}
+                      <div className="space-y-2">
+                        <h4 className="font-medium text-sm">Host</h4>
+                        <div className="flex items-center gap-2">
+                          <div className="w-6 h-6 bg-gradient-to-r from-rose-400 to-pink-500 rounded-full flex items-center justify-center">
+                            <span className="text-white text-xs font-bold">
+                              {hostInfo.initial}
+                            </span>
+                          </div>
+                          <span className="text-sm">{hostInfo.name}</span>
+                          {hostInfo.superhost && (
+                            <Badge
+                              variant="secondary"
+                              className="text-xs bg-yellow-100 text-yellow-800"
+                            >
+                              Superhost
+                            </Badge>
+                          )}
+                        </div>
+                      </div>
+
+                      {/* Action Button */}
+                      <Button
+                        className="w-full bg-rose-500 hover:bg-rose-600 text-white"
+                        onClick={() => handleViewProperty(property.id)}
+                      >
+                        View Details
+                        <ArrowRight className="h-4 w-4 ml-2" />
+                      </Button>
+                    </CardContent>
+                  </Card>
+                );
+              })}
             </div>
 
             {/* Comparison Table */}
@@ -341,7 +364,9 @@ export default function PropertyComparison({ properties, onClose }) {
                             <div className="flex items-center gap-1">
                               <MapPin className="h-3 w-3 text-gray-400" />
                               <span className="text-sm">
-                                {property.location || 'Not specified'}
+                                {property.shortLocation ||
+                                  property.location ||
+                                  'Not specified'}
                               </span>
                             </div>
                           </td>
@@ -367,24 +392,27 @@ export default function PropertyComparison({ properties, onClose }) {
                         <td className="border border-gray-200 p-4 font-medium bg-gray-50">
                           Host
                         </td>
-                        {selectedProperties.map((property) => (
-                          <td
-                            key={property.id}
-                            className="border border-gray-200 p-4"
-                          >
-                            <div className="flex items-center gap-2">
-                              <span>{getHostName(property.host)}</span>
-                              {property.superhost && (
-                                <Badge
-                                  variant="secondary"
-                                  className="text-xs bg-yellow-100 text-yellow-800"
-                                >
-                                  Superhost
-                                </Badge>
-                              )}
-                            </div>
-                          </td>
-                        ))}
+                        {selectedProperties.map((property) => {
+                          const hostInfo = getHostInfo(property.host);
+                          return (
+                            <td
+                              key={property.id}
+                              className="border border-gray-200 p-4"
+                            >
+                              <div className="flex items-center gap-2">
+                                <span>{hostInfo.name}</span>
+                                {hostInfo.superhost && (
+                                  <Badge
+                                    variant="secondary"
+                                    className="text-xs bg-yellow-100 text-yellow-800"
+                                  >
+                                    Superhost
+                                  </Badge>
+                                )}
+                              </div>
+                            </td>
+                          );
+                        })}
                       </tr>
                       <tr className="hover:bg-gray-50">
                         <td className="border border-gray-200 p-4 font-medium bg-gray-50">

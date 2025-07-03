@@ -6,14 +6,29 @@ import { Card, CardContent } from '../../components/ui/card';
 import { Button } from '../../components/ui/button';
 import { Badge } from '../../components/ui/badge';
 import { mockDestinations } from '../../data/mockData';
+import { useNavigate } from 'react-router-dom';
 
 export default function FeaturedDestinations({ onDestinationSelect }) {
   const [hoveredCard, setHoveredCard] = useState(null);
+  const navigate = useNavigate();
 
   const handleDestinationClick = (destination) => {
+    console.log('Destination clicked:', destination);
+
+    // Check authentication before proceeding
+    const isAuthenticated = localStorage.getItem('isAuthenticated');
+    if (!isAuthenticated) {
+      localStorage.setItem(
+        'returnUrl',
+        `/destinations/${encodeURIComponent(destination.name)}`
+      );
+      navigate('/auth/login');
+      return;
+    }
+
     // Update search filters with selected destination
     if (onDestinationSelect) {
-      onDestinationSelect({
+      const destinationFilters = {
         location: destination.name,
         checkIn: null,
         checkOut: null,
@@ -21,14 +36,23 @@ export default function FeaturedDestinations({ onDestinationSelect }) {
         priceRange: [0, destination.averagePrice * 2],
         propertyType: 'all',
         amenities: [],
-      });
+      };
+
+      console.log('Setting filters:', destinationFilters);
+      onDestinationSelect(destinationFilters);
     }
 
     // Scroll to search results
-    const searchSection = document.querySelector('[data-search-results]');
-    if (searchSection) {
-      searchSection.scrollIntoView({ behavior: 'smooth' });
-    }
+    setTimeout(() => {
+      const searchSection = document.querySelector('[data-search-results]');
+      if (searchSection) {
+        searchSection.scrollIntoView({ behavior: 'smooth' });
+      }
+    }, 100);
+  };
+
+  const handleViewAllDestinations = () => {
+    navigate('/destinations');
   };
 
   return (
@@ -61,7 +85,9 @@ export default function FeaturedDestinations({ onDestinationSelect }) {
             >
               <div className="relative overflow-hidden">
                 <img
-                  src={destination.image || '/placeholder.svg'}
+                  src={
+                    destination.image || '/placeholder.svg?height=256&width=400'
+                  }
                   alt={destination.name}
                   className="w-full h-64 object-cover group-hover:scale-110 transition-transform duration-700"
                   onError={(e) => {
@@ -168,7 +194,8 @@ export default function FeaturedDestinations({ onDestinationSelect }) {
           <Button
             size="lg"
             variant="outline"
-            className="px-8 py-3 border-2 hover:bg-gray-50 transition-all duration-300 hover:scale-105"
+            onClick={handleViewAllDestinations}
+            className="px-8 py-3 border-2 hover:bg-gray-50 transition-all duration-300 hover:scale-105 bg-transparent"
           >
             View All Destinations
             <ArrowRight className="h-5 w-5 ml-2" />
