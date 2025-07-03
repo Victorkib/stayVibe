@@ -1,121 +1,177 @@
 'use client';
 
-import { ArrowRight } from 'lucide-react';
+import { useState } from 'react';
+import { ArrowRight, MapPin, Star, TrendingUp } from 'lucide-react';
 import { Card, CardContent } from '../../components/ui/card';
 import { Button } from '../../components/ui/button';
+import { Badge } from '../../components/ui/badge';
+import { mockDestinations } from '../../data/mockData';
 
-const destinations = [
-  {
-    id: 1,
-    name: 'Paris, France',
-    properties: 1200,
-    image: '/city/paris.jpeg',
-    description: 'City of Light',
-  },
-  {
-    id: 2,
-    name: 'Tokyo, Japan',
-    properties: 890,
-    image: '/city/tokyo.jpeg',
-    description: 'Modern Metropolis',
-  },
-  {
-    id: 3,
-    name: 'New York, USA',
-    properties: 2100,
-    image: '/city/newyork.jpeg',
-    description: 'The Big Apple',
-  },
-  // {
-  //   id: 4,
-  //   name: 'London, UK',
-  //   properties: 1500,
-  //   image: '/city/paris.jpeg',
-  //   description: 'Historic Capital',
-  // },
-  // {
-  //   id: 5,
-  //   name: 'Bali, Indonesia',
-  //   properties: 650,
-  //   image: '/city/paris.jpeg',
-  //   description: 'Tropical Paradise',
-  // },
-  // {
-  //   id: 6,
-  //   name: 'Dubai, UAE',
-  //   properties: 780,
-  //   image: '/city/paris.jpeg',
-  //   description: 'Desert Oasis',
-  // },
-];
+export default function FeaturedDestinations({ onDestinationSelect }) {
+  const [hoveredCard, setHoveredCard] = useState(null);
 
-export default function FeaturedDestinations() {
+  const handleDestinationClick = (destination) => {
+    // Update search filters with selected destination
+    if (onDestinationSelect) {
+      onDestinationSelect({
+        location: destination.name,
+        checkIn: null,
+        checkOut: null,
+        guests: 1,
+        priceRange: [0, destination.averagePrice * 2],
+        propertyType: 'all',
+        amenities: [],
+      });
+    }
+
+    // Scroll to search results
+    const searchSection = document.querySelector('[data-search-results]');
+    if (searchSection) {
+      searchSection.scrollIntoView({ behavior: 'smooth' });
+    }
+  };
+
   return (
-    <section className="py-16 bg-gray-50">
+    <section className="py-16 bg-gradient-to-br from-gray-50 via-white to-gray-50">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+        {/* Header */}
         <div className="text-center mb-12">
+          <div className="inline-flex items-center gap-2 bg-rose-50 text-rose-600 px-4 py-2 rounded-full text-sm font-medium mb-4">
+            <TrendingUp className="h-4 w-4" />
+            Popular Destinations
+          </div>
           <h2 className="text-3xl md:text-4xl font-bold text-gray-900 mb-4">
-            Explore Popular Destinations
+            Explore Amazing Places
           </h2>
           <p className="text-xl text-gray-600 max-w-2xl mx-auto">
-            Discover amazing places around the world with unique stays and
-            experiences
+            Discover unique stays and experiences in the world's most
+            sought-after destinations
           </p>
         </div>
 
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
-          {destinations.map((destination) => (
+        {/* Destinations Grid */}
+        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 mb-12">
+          {mockDestinations.slice(0, 6).map((destination) => (
             <Card
               key={destination.id}
-              className="group cursor-pointer hover:shadow-xl transition-all duration-300 transform hover:-translate-y-2 overflow-hidden"
+              className="group cursor-pointer hover:shadow-2xl transition-all duration-500 transform hover:-translate-y-2 overflow-hidden border-0 bg-white"
+              onMouseEnter={() => setHoveredCard(destination.id)}
+              onMouseLeave={() => setHoveredCard(null)}
+              onClick={() => handleDestinationClick(destination)}
             >
-              <div className="relative">
+              <div className="relative overflow-hidden">
                 <img
                   src={destination.image || '/placeholder.svg'}
                   alt={destination.name}
-                  className="w-full h-64 object-cover group-hover:scale-110 transition-transform duration-500"
+                  className="w-full h-64 object-cover group-hover:scale-110 transition-transform duration-700"
+                  onError={(e) => {
+                    e.target.src = '/placeholder.svg?height=256&width=400';
+                  }}
                 />
-                <div className="absolute inset-0 bg-gradient-to-t from-black via-transparent to-transparent opacity-60" />
-                <div className="absolute bottom-4 left-4 text-white">
+
+                {/* Gradient Overlay */}
+                <div className="absolute inset-0 bg-gradient-to-t from-black/70 via-black/20 to-transparent" />
+
+                {/* Trending Badge */}
+                {destination.trending && (
+                  <Badge className="absolute top-4 left-4 bg-gradient-to-r from-rose-500 to-pink-500 text-white border-0 shadow-lg">
+                    <TrendingUp className="h-3 w-3 mr-1" />
+                    Trending
+                  </Badge>
+                )}
+
+                {/* Rating Badge */}
+                <div className="absolute top-4 right-4 bg-white/90 backdrop-blur-sm rounded-full px-3 py-1 flex items-center gap-1">
+                  <Star className="h-3 w-3 text-yellow-400 fill-current" />
+                  <span className="text-sm font-semibold text-gray-800">
+                    {destination.rating}
+                  </span>
+                </div>
+
+                {/* Destination Info Overlay */}
+                <div className="absolute bottom-4 left-4 right-4 text-white">
                   <h3 className="text-2xl font-bold mb-1">
                     {destination.name}
                   </h3>
-                  <p className="text-sm opacity-90">
+                  <p className="text-sm opacity-90 mb-2">
                     {destination.description}
                   </p>
+                  <div className="flex items-center justify-between">
+                    <span className="text-sm font-medium">
+                      {destination.properties}+ stays
+                    </span>
+                    <span className="text-sm font-medium">
+                      from ${destination.averagePrice}/night
+                    </span>
+                  </div>
                 </div>
-                <div className="absolute top-4 right-4 bg-white bg-opacity-90 rounded-full px-3 py-1">
-                  <span className="text-sm font-semibold text-gray-800">
-                    {destination.properties}+ stays
-                  </span>
-                </div>
+
+                {/* Hover Effect Overlay */}
+                <div
+                  className={`absolute inset-0 bg-gradient-to-t from-rose-500/20 to-transparent transition-opacity duration-300 ${
+                    hoveredCard === destination.id ? 'opacity-100' : 'opacity-0'
+                  }`}
+                />
               </div>
+
               <CardContent className="p-6">
-                <div className="flex justify-between items-center">
-                  <div>
-                    <h4 className="font-semibold text-gray-900 mb-1">
+                <div className="flex justify-between items-start mb-4">
+                  <div className="flex-1">
+                    <h4 className="font-semibold text-gray-900 mb-1 text-lg">
                       {destination.name}
                     </h4>
-                    <p className="text-sm text-gray-600">
-                      {destination.properties} properties available
-                    </p>
+                    <div className="flex items-center gap-1 text-gray-600 mb-2">
+                      <MapPin className="h-4 w-4" />
+                      <span className="text-sm">
+                        {destination.properties} properties available
+                      </span>
+                    </div>
+                    <div className="text-sm text-gray-600">
+                      Average:{' '}
+                      <span className="font-semibold text-gray-900">
+                        ${destination.averagePrice}/night
+                      </span>
+                    </div>
                   </div>
                   <Button
                     variant="ghost"
                     size="sm"
-                    className="group-hover:bg-rose-50 group-hover:text-rose-600"
+                    className={`transition-all duration-300 ${
+                      hoveredCard === destination.id
+                        ? 'bg-rose-50 text-rose-600 scale-110'
+                        : 'hover:bg-gray-50'
+                    }`}
                   >
                     <ArrowRight className="h-4 w-4" />
                   </Button>
+                </div>
+
+                {/* Popular Amenities */}
+                <div className="flex flex-wrap gap-1">
+                  {destination.popularAmenities.slice(0, 3).map((amenity) => (
+                    <Badge
+                      key={amenity}
+                      variant="secondary"
+                      className="text-xs bg-gray-100 text-gray-700 hover:bg-gray-200 transition-colors"
+                    >
+                      {amenity}
+                    </Badge>
+                  ))}
                 </div>
               </CardContent>
             </Card>
           ))}
         </div>
 
-        <div className="text-center mt-12">
-          <Button size="lg" variant="outline" className="px-8">
+        {/* Call to Action */}
+        <div className="text-center">
+          <Button
+            size="lg"
+            variant="outline"
+            className="px-8 py-3 border-2 hover:bg-gray-50 transition-all duration-300 hover:scale-105"
+          >
             View All Destinations
+            <ArrowRight className="h-5 w-5 ml-2" />
           </Button>
         </div>
       </div>

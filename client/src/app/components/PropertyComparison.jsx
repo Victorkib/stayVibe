@@ -11,16 +11,19 @@ import {
   ChefHat,
   Users,
   Calendar,
+  ArrowRight,
 } from 'lucide-react';
 import { Button } from '../../components/ui/button';
 import { Card, CardContent } from '../../components/ui/card';
 import { Badge } from '../../components/ui/badge';
 import { Separator } from '../../components/ui/separator';
+import { useNavigate } from 'react-router-dom';
 
 export default function PropertyComparison({ properties, onClose }) {
   const [selectedProperties, setSelectedProperties] = useState(
     properties.slice(0, 3)
   );
+  const navigate = useNavigate();
 
   const removeProperty = (propertyId) => {
     setSelectedProperties((prev) => prev.filter((p) => p.id !== propertyId));
@@ -41,18 +44,33 @@ export default function PropertyComparison({ properties, onClose }) {
     }
   };
 
+  const handleViewProperty = (propertyId) => {
+    const isAuthenticated = localStorage.getItem('isAuthenticated');
+    if (isAuthenticated) {
+      navigate(`/property/${propertyId}`);
+    } else {
+      localStorage.setItem('returnUrl', `/property/${propertyId}`);
+      navigate('/auth/login');
+    }
+  };
+
   if (selectedProperties.length === 0) {
     return (
       <div className="fixed inset-0 bg-black bg-opacity-50 z-50 flex items-center justify-center p-4">
         <Card className="w-full max-w-md">
           <CardContent className="p-6 text-center">
+            <div className="w-16 h-16 bg-gray-100 rounded-full flex items-center justify-center mx-auto mb-4">
+              <MapPin className="h-8 w-8 text-gray-400" />
+            </div>
             <h3 className="text-lg font-semibold mb-2">
               No Properties to Compare
             </h3>
             <p className="text-gray-600 mb-4">
               Add properties to your comparison list to see them here.
             </p>
-            <Button onClick={onClose}>Close</Button>
+            <Button onClick={onClose} className="bg-rose-500 hover:bg-rose-600">
+              Close
+            </Button>
           </CardContent>
         </Card>
       </div>
@@ -63,9 +81,16 @@ export default function PropertyComparison({ properties, onClose }) {
     <div className="fixed inset-0 bg-black bg-opacity-50 z-50 flex items-center justify-center p-4">
       <div className="bg-white rounded-2xl shadow-2xl w-full max-w-6xl max-h-[90vh] overflow-hidden">
         {/* Header */}
-        <div className="flex items-center justify-between p-6 border-b">
-          <h2 className="text-2xl font-bold">Compare Properties</h2>
-          <Button variant="ghost" size="icon" onClick={onClose}>
+        <div className="flex items-center justify-between p-6 border-b bg-gradient-to-r from-blue-50 to-indigo-50">
+          <h2 className="text-2xl font-bold text-gray-900">
+            Compare Properties
+          </h2>
+          <Button
+            variant="ghost"
+            size="icon"
+            onClick={onClose}
+            className="hover:bg-white/50"
+          >
             <X className="h-6 w-6" />
           </Button>
         </div>
@@ -73,13 +98,17 @@ export default function PropertyComparison({ properties, onClose }) {
         {/* Comparison Content */}
         <div className="overflow-auto max-h-[calc(90vh-80px)]">
           <div className="p-6">
-            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+            {/* Property Cards Grid */}
+            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 mb-8">
               {selectedProperties.map((property) => (
-                <Card key={property.id} className="relative">
+                <Card
+                  key={property.id}
+                  className="relative border-2 hover:shadow-lg transition-all"
+                >
                   <Button
                     variant="ghost"
                     size="icon"
-                    className="absolute top-2 right-2 z-10"
+                    className="absolute top-2 right-2 z-10 bg-white/80 hover:bg-white"
                     onClick={() => removeProperty(property.id)}
                   >
                     <X className="h-4 w-4" />
@@ -90,10 +119,18 @@ export default function PropertyComparison({ properties, onClose }) {
                       src={property.images?.[0] || '/placeholder.svg'}
                       alt={property.title}
                       className="w-full h-48 object-cover rounded-t-lg"
+                      onError={(e) => {
+                        e.target.src = '/placeholder.svg?height=192&width=400';
+                      }}
                     />
-                    <Badge className="absolute top-3 left-3 bg-white text-gray-800">
+                    <Badge className="absolute top-3 left-3 bg-white text-gray-800 shadow-lg">
                       ${property.price}/night
                     </Badge>
+                    {property.featured && (
+                      <Badge className="absolute top-3 right-12 bg-rose-500 text-white shadow-lg">
+                        Featured
+                      </Badge>
+                    )}
                   </div>
 
                   <CardContent className="p-4 space-y-4">
@@ -103,8 +140,8 @@ export default function PropertyComparison({ properties, onClose }) {
                         {property.title}
                       </h3>
                       <div className="flex items-center gap-2 text-sm text-gray-600 mb-2">
-                        <MapPin className="h-3 w-3" />
-                        {property.location}
+                        <MapPin className="h-3 w-3 flex-shrink-0" />
+                        <span className="truncate">{property.location}</span>
                       </div>
                       <div className="flex items-center gap-2">
                         <Star className="h-4 w-4 text-yellow-400 fill-current" />
@@ -142,7 +179,7 @@ export default function PropertyComparison({ properties, onClose }) {
                           <Badge
                             key={amenity}
                             variant="secondary"
-                            className="text-xs flex items-center gap-1"
+                            className="text-xs flex items-center gap-1 bg-gray-100 hover:bg-gray-200"
                           >
                             {getAmenityIcon(amenity)}
                             {amenity}
@@ -162,10 +199,17 @@ export default function PropertyComparison({ properties, onClose }) {
                     <div className="space-y-2">
                       <h4 className="font-medium text-sm">Host</h4>
                       <div className="flex items-center gap-2">
-                        <div className="w-6 h-6 bg-gray-200 rounded-full"></div>
+                        <div className="w-6 h-6 bg-gradient-to-r from-rose-400 to-pink-500 rounded-full flex items-center justify-center">
+                          <span className="text-white text-xs font-bold">
+                            {property.host?.charAt(0) || 'H'}
+                          </span>
+                        </div>
                         <span className="text-sm">{property.host}</span>
                         {property.superhost && (
-                          <Badge variant="secondary" className="text-xs">
+                          <Badge
+                            variant="secondary"
+                            className="text-xs bg-yellow-100 text-yellow-800"
+                          >
                             Superhost
                           </Badge>
                         )}
@@ -173,8 +217,12 @@ export default function PropertyComparison({ properties, onClose }) {
                     </div>
 
                     {/* Action Button */}
-                    <Button className="w-full bg-rose-500 hover:bg-rose-600">
+                    <Button
+                      className="w-full bg-rose-500 hover:bg-rose-600 text-white"
+                      onClick={() => handleViewProperty(property.id)}
+                    >
                       View Details
+                      <ArrowRight className="h-4 w-4 ml-2" />
                     </Button>
                   </CardContent>
                 </Card>
@@ -184,108 +232,131 @@ export default function PropertyComparison({ properties, onClose }) {
             {/* Comparison Table */}
             {selectedProperties.length > 1 && (
               <div className="mt-8">
-                <h3 className="text-lg font-semibold mb-4">
+                <h3 className="text-lg font-semibold mb-4 flex items-center gap-2">
+                  <Star className="h-5 w-5 text-blue-500" />
                   Side-by-Side Comparison
                 </h3>
-                <div className="overflow-x-auto">
-                  <table className="w-full border-collapse border border-gray-200">
+                <div className="overflow-x-auto bg-white rounded-lg border">
+                  <table className="w-full border-collapse">
                     <thead>
                       <tr className="bg-gray-50">
-                        <th className="border border-gray-200 p-3 text-left font-medium">
+                        <th className="border border-gray-200 p-4 text-left font-semibold text-gray-900">
                           Feature
                         </th>
                         {selectedProperties.map((property) => (
                           <th
                             key={property.id}
-                            className="border border-gray-200 p-3 text-left font-medium"
+                            className="border border-gray-200 p-4 text-left font-semibold text-gray-900 min-w-[200px]"
                           >
-                            {property.title.substring(0, 30)}...
+                            <div className="truncate">
+                              {property.title.substring(0, 30)}...
+                            </div>
                           </th>
                         ))}
                       </tr>
                     </thead>
                     <tbody>
-                      <tr>
-                        <td className="border border-gray-200 p-3 font-medium">
+                      <tr className="hover:bg-gray-50">
+                        <td className="border border-gray-200 p-4 font-medium bg-gray-50">
                           Price per night
                         </td>
                         {selectedProperties.map((property) => (
                           <td
                             key={property.id}
-                            className="border border-gray-200 p-3"
+                            className="border border-gray-200 p-4"
                           >
-                            ${property.price}
+                            <span className="text-lg font-bold text-green-600">
+                              ${property.price}
+                            </span>
                           </td>
                         ))}
                       </tr>
-                      <tr className="bg-gray-50">
-                        <td className="border border-gray-200 p-3 font-medium">
+                      <tr className="hover:bg-gray-50">
+                        <td className="border border-gray-200 p-4 font-medium bg-gray-50">
                           Rating
                         </td>
                         {selectedProperties.map((property) => (
                           <td
                             key={property.id}
-                            className="border border-gray-200 p-3"
+                            className="border border-gray-200 p-4"
                           >
-                            ⭐ {property.rating} ({property.reviews} reviews)
+                            <div className="flex items-center gap-1">
+                              <Star className="h-4 w-4 text-yellow-400 fill-current" />
+                              <span className="font-medium">
+                                {property.rating}
+                              </span>
+                              <span className="text-sm text-gray-500">
+                                ({property.reviews} reviews)
+                              </span>
+                            </div>
                           </td>
                         ))}
                       </tr>
-                      <tr>
-                        <td className="border border-gray-200 p-3 font-medium">
+                      <tr className="hover:bg-gray-50">
+                        <td className="border border-gray-200 p-4 font-medium bg-gray-50">
                           Location
                         </td>
                         {selectedProperties.map((property) => (
                           <td
                             key={property.id}
-                            className="border border-gray-200 p-3"
+                            className="border border-gray-200 p-4"
                           >
-                            {property.location}
+                            <div className="flex items-center gap-1">
+                              <MapPin className="h-3 w-3 text-gray-400" />
+                              <span className="text-sm">
+                                {property.location}
+                              </span>
+                            </div>
                           </td>
                         ))}
                       </tr>
-                      <tr className="bg-gray-50">
-                        <td className="border border-gray-200 p-3 font-medium">
+                      <tr className="hover:bg-gray-50">
+                        <td className="border border-gray-200 p-4 font-medium bg-gray-50">
                           Capacity
                         </td>
                         {selectedProperties.map((property) => (
                           <td
                             key={property.id}
-                            className="border border-gray-200 p-3"
+                            className="border border-gray-200 p-4"
                           >
-                            {property.guests || 4} guests
+                            <div className="flex items-center gap-1">
+                              <Users className="h-3 w-3 text-gray-400" />
+                              <span>{property.guests || 4} guests</span>
+                            </div>
                           </td>
                         ))}
                       </tr>
-                      <tr>
-                        <td className="border border-gray-200 p-3 font-medium">
+                      <tr className="hover:bg-gray-50">
+                        <td className="border border-gray-200 p-4 font-medium bg-gray-50">
                           Host
                         </td>
                         {selectedProperties.map((property) => (
                           <td
                             key={property.id}
-                            className="border border-gray-200 p-3"
+                            className="border border-gray-200 p-4"
                           >
-                            {property.host}
-                            {property.superhost && (
-                              <Badge
-                                variant="secondary"
-                                className="ml-2 text-xs"
-                              >
-                                Superhost
-                              </Badge>
-                            )}
+                            <div className="flex items-center gap-2">
+                              <span>{property.host}</span>
+                              {property.superhost && (
+                                <Badge
+                                  variant="secondary"
+                                  className="text-xs bg-yellow-100 text-yellow-800"
+                                >
+                                  Superhost
+                                </Badge>
+                              )}
+                            </div>
                           </td>
                         ))}
                       </tr>
-                      <tr className="bg-gray-50">
-                        <td className="border border-gray-200 p-3 font-medium">
+                      <tr className="hover:bg-gray-50">
+                        <td className="border border-gray-200 p-4 font-medium bg-gray-50">
                           Key Amenities
                         </td>
                         {selectedProperties.map((property) => (
                           <td
                             key={property.id}
-                            className="border border-gray-200 p-3"
+                            className="border border-gray-200 p-4"
                           >
                             <div className="flex flex-wrap gap-1">
                               {property.amenities
@@ -299,6 +370,11 @@ export default function PropertyComparison({ properties, onClose }) {
                                     {amenity}
                                   </Badge>
                                 ))}
+                              {property.amenities?.length > 3 && (
+                                <Badge variant="outline" className="text-xs">
+                                  +{property.amenities.length - 3}
+                                </Badge>
+                              )}
                             </div>
                           </td>
                         ))}
@@ -308,6 +384,19 @@ export default function PropertyComparison({ properties, onClose }) {
                 </div>
               </div>
             )}
+          </div>
+        </div>
+
+        {/* Footer */}
+        <div className="border-t bg-gray-50 p-4">
+          <div className="flex justify-between items-center">
+            <p className="text-sm text-gray-600">
+              Comparing {selectedProperties.length}{' '}
+              {selectedProperties.length === 1 ? 'property' : 'properties'}
+            </p>
+            <Button onClick={onClose} className="bg-rose-500 hover:bg-rose-600">
+              Close Comparison
+            </Button>
           </div>
         </div>
       </div>

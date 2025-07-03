@@ -487,8 +487,10 @@ export default function ProfilePage() {
                   <CardTitle>Notification Preferences</CardTitle>
                 </CardHeader>
                 <CardContent className="space-y-4">
-                  {Object.entries(profileData.preferences.notifications).map(
-                    ([key, value]) => (
+                  {profileData?.preferences?.notifications &&
+                    Object?.entries(
+                      profileData?.preferences?.notifications
+                    ).map(([key, value]) => (
                       <div
                         key={key}
                         className="flex items-center justify-between p-4 border rounded-lg"
@@ -524,8 +526,7 @@ export default function ProfilePage() {
                           className="rounded"
                         />
                       </div>
-                    )
-                  )}
+                    ))}
                 </CardContent>
               </Card>
             </TabsContent>

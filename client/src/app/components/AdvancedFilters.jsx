@@ -1,6 +1,6 @@
 'use client';
 
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import { Filter, X, DollarSign, Home, Star, Zap } from 'lucide-react';
 import { Button } from '../../components/ui/button';
 import { Card, CardContent } from '../../components/ui/card';
@@ -9,6 +9,7 @@ import { Slider } from '../../components/ui/slider';
 import { Badge } from '../../components/ui/badge';
 import { Input } from '../../components/ui/input';
 import { Separator } from '../../components/ui/separator';
+import { mockProperties } from '../../data/mockData';
 
 export default function AdvancedFilters({
   isOpen,
@@ -16,60 +17,98 @@ export default function AdvancedFilters({
   filters,
   onFiltersChange,
 }) {
-  const [localFilters, setLocalFilters] = useState(filters);
+  const [localFilters, setLocalFilters] = useState({
+    location: '',
+    checkIn: null,
+    checkOut: null,
+    guests: 1,
+    priceRange: [0, 1000],
+    propertyType: 'all',
+    amenities: [],
+    propertyTypes: [],
+    hostTypes: [],
+    bookingOptions: [],
+    rating: 0,
+    bedrooms: 0,
+    bathrooms: 0,
+    instantBook: false,
+    ...filters,
+  });
 
-  const propertyTypes = [
-    { id: 'house', name: 'House', icon: '🏠' },
-    { id: 'apartment', name: 'Apartment', icon: '🏢' },
-    { id: 'villa', name: 'Villa', icon: '🏖️' },
-    { id: 'cabin', name: 'Cabin', icon: '🏕️' },
-    { id: 'loft', name: 'Loft', icon: '🏭' },
-    { id: 'townhouse', name: 'Townhouse', icon: '🏘️' },
-    { id: 'castle', name: 'Castle', icon: '🏰' },
-    { id: 'treehouse', name: 'Treehouse', icon: '🌳' },
-  ];
+  // Update local filters when props change
+  useEffect(() => {
+    setLocalFilters((prev) => ({ ...prev, ...filters }));
+  }, [filters]);
 
   const amenities = [
-    { id: 'wifi', name: 'WiFi', icon: '📶', category: 'essentials' },
-    { id: 'kitchen', name: 'Kitchen', icon: '🍳', category: 'essentials' },
-    { id: 'parking', name: 'Free Parking', icon: '🚗', category: 'essentials' },
-    { id: 'pool', name: 'Pool', icon: '🏊', category: 'luxury' },
-    { id: 'hotTub', name: 'Hot Tub', icon: '🛁', category: 'luxury' },
-    { id: 'gym', name: 'Gym', icon: '💪', category: 'luxury' },
-    { id: 'spa', name: 'Spa', icon: '🧘', category: 'luxury' },
+    { id: 'Wifi', name: 'WiFi', icon: '📶', category: 'essentials' },
+    { id: 'Kitchen', name: 'Kitchen', icon: '🍳', category: 'essentials' },
+    { id: 'Parking', name: 'Free Parking', icon: '🚗', category: 'essentials' },
+    { id: 'Pool', name: 'Pool', icon: '🏊', category: 'luxury' },
+    { id: 'Hot Tub', name: 'Hot Tub', icon: '🛁', category: 'luxury' },
+    { id: 'Gym', name: 'Gym', icon: '💪', category: 'luxury' },
+    { id: 'Spa', name: 'Spa', icon: '🧘', category: 'luxury' },
     {
-      id: 'beachAccess',
+      id: 'Beach Access',
       name: 'Beach Access',
       icon: '🏖️',
       category: 'location',
     },
     {
-      id: 'mountainView',
+      id: 'Mountain View',
       name: 'Mountain View',
       icon: '🏔️',
       category: 'location',
     },
-    { id: 'cityView', name: 'City View', icon: '🏙️', category: 'location' },
+    { id: 'City View', name: 'City View', icon: '🏙️', category: 'location' },
     {
-      id: 'petFriendly',
+      id: 'Pet Friendly',
       name: 'Pet Friendly',
       icon: '🐕',
       category: 'policies',
     },
     {
-      id: 'smokingAllowed',
+      id: 'Smoking Allowed',
       name: 'Smoking Allowed',
       icon: '🚬',
       category: 'policies',
     },
     {
-      id: 'wheelchairAccessible',
+      id: 'Wheelchair Accessible',
       name: 'Wheelchair Accessible',
       icon: '♿',
       category: 'accessibility',
     },
-    { id: 'elevator', name: 'Elevator', icon: '🛗', category: 'accessibility' },
+    { id: 'Elevator', name: 'Elevator', icon: '🛗', category: 'accessibility' },
   ];
+
+  const getAvailablePropertyTypes = () => {
+    const types = new Set();
+    Object.values(mockProperties).forEach((property) => {
+      if (property.type) types.add(property.type);
+    });
+    return Array.from(types).map((type) => ({
+      id: type.toLowerCase(),
+      name: type,
+      icon: getPropertyTypeIcon(type),
+    }));
+  };
+
+  const getPropertyTypeIcon = (type) => {
+    const icons = {
+      House: '🏠',
+      Apartment: '🏢',
+      Villa: '🏖️',
+      Cabin: '🏕️',
+      Loft: '🏭',
+      Townhouse: '🏘️',
+      Castle: '🏰',
+      Treehouse: '🌳',
+    };
+    return icons[type] || '🏠';
+  };
+
+  const propertyTypes = getAvailablePropertyTypes();
 
   const hostTypes = [
     {
@@ -119,8 +158,9 @@ export default function AdvancedFilters({
       checkOut: null,
       guests: 1,
       priceRange: [0, 1000],
-      propertyTypes: [],
+      propertyType: 'all',
       amenities: [],
+      propertyTypes: [],
       hostTypes: [],
       bookingOptions: [],
       rating: 0,
@@ -134,9 +174,9 @@ export default function AdvancedFilters({
   const toggleArrayFilter = (filterKey, value) => {
     setLocalFilters((prev) => ({
       ...prev,
-      [filterKey]: prev[filterKey].includes(value)
+      [filterKey]: prev[filterKey]?.includes(value)
         ? prev[filterKey].filter((item) => item !== value)
-        : [...prev[filterKey], value],
+        : [...(prev[filterKey] || []), value],
     }));
   };
 
@@ -146,12 +186,17 @@ export default function AdvancedFilters({
     <div className="fixed inset-0 bg-black bg-opacity-50 z-50 flex items-center justify-center p-4">
       <div className="bg-white rounded-2xl shadow-2xl w-full max-w-4xl max-h-[90vh] overflow-hidden">
         {/* Header */}
-        <div className="flex items-center justify-between p-6 border-b">
-          <h2 className="text-2xl font-bold flex items-center gap-2">
-            <Filter className="h-6 w-6" />
+        <div className="flex items-center justify-between p-6 border-b bg-gradient-to-r from-rose-50 to-pink-50">
+          <h2 className="text-2xl font-bold flex items-center gap-2 text-gray-900">
+            <Filter className="h-6 w-6 text-rose-500" />
             Advanced Filters
           </h2>
-          <Button variant="ghost" size="icon" onClick={onClose}>
+          <Button
+            variant="ghost"
+            size="icon"
+            onClick={onClose}
+            className="hover:bg-white/50"
+          >
             <X className="h-6 w-6" />
           </Button>
         </div>
@@ -161,7 +206,7 @@ export default function AdvancedFilters({
           {/* Price Range */}
           <div>
             <h3 className="text-lg font-semibold mb-4 flex items-center gap-2">
-              <DollarSign className="h-5 w-5" />
+              <DollarSign className="h-5 w-5 text-green-600" />
               Price Range
             </h3>
             <div className="space-y-4">
@@ -180,7 +225,7 @@ export default function AdvancedFilters({
               />
               <div className="grid grid-cols-2 gap-4">
                 <div>
-                  <Label>Min Price</Label>
+                  <Label className="text-sm font-medium">Min Price</Label>
                   <Input
                     type="number"
                     value={localFilters.priceRange[0]}
@@ -193,10 +238,11 @@ export default function AdvancedFilters({
                         ],
                       })
                     }
+                    className="mt-1"
                   />
                 </div>
                 <div>
-                  <Label>Max Price</Label>
+                  <Label className="text-sm font-medium">Max Price</Label>
                   <Input
                     type="number"
                     value={localFilters.priceRange[1]}
@@ -209,6 +255,7 @@ export default function AdvancedFilters({
                         ],
                       })
                     }
+                    className="mt-1"
                   />
                 </div>
               </div>
@@ -220,17 +267,17 @@ export default function AdvancedFilters({
           {/* Property Type */}
           <div>
             <h3 className="text-lg font-semibold mb-4 flex items-center gap-2">
-              <Home className="h-5 w-5" />
+              <Home className="h-5 w-5 text-blue-600" />
               Property Type
             </h3>
             <div className="grid grid-cols-2 md:grid-cols-4 gap-3">
               {propertyTypes.map((type) => (
                 <Card
                   key={type.id}
-                  className={`cursor-pointer transition-all ${
+                  className={`cursor-pointer transition-all hover:shadow-md ${
                     localFilters.propertyTypes?.includes(type.id)
                       ? 'ring-2 ring-rose-500 bg-rose-50'
-                      : 'hover:shadow-md'
+                      : 'hover:bg-gray-50'
                   }`}
                   onClick={() => toggleArrayFilter('propertyTypes', type.id)}
                 >
@@ -260,13 +307,13 @@ export default function AdvancedFilters({
                     onClick={() =>
                       setLocalFilters({
                         ...localFilters,
-                        bedrooms: Math.max(0, localFilters.bedrooms - 1),
+                        bedrooms: Math.max(0, (localFilters.bedrooms || 0) - 1),
                       })
                     }
                   >
                     -
                   </Button>
-                  <span className="w-12 text-center">
+                  <span className="w-12 text-center font-medium">
                     {localFilters.bedrooms || 'Any'}
                   </span>
                   <Button
@@ -294,13 +341,16 @@ export default function AdvancedFilters({
                     onClick={() =>
                       setLocalFilters({
                         ...localFilters,
-                        bathrooms: Math.max(0, localFilters.bathrooms - 1),
+                        bathrooms: Math.max(
+                          0,
+                          (localFilters.bathrooms || 0) - 1
+                        ),
                       })
                     }
                   >
                     -
                   </Button>
-                  <span className="w-12 text-center">
+                  <span className="w-12 text-center font-medium">
                     {localFilters.bathrooms || 'Any'}
                   </span>
                   <Button
@@ -334,7 +384,7 @@ export default function AdvancedFilters({
                 'accessibility',
               ].map((category) => (
                 <div key={category}>
-                  <h4 className="font-medium text-sm mb-2 capitalize">
+                  <h4 className="font-medium text-sm mb-2 capitalize text-gray-700">
                     {category}
                   </h4>
                   <div className="flex flex-wrap gap-2">
@@ -348,7 +398,11 @@ export default function AdvancedFilters({
                               ? 'default'
                               : 'outline'
                           }
-                          className="cursor-pointer p-2 flex items-center gap-1"
+                          className={`cursor-pointer p-2 flex items-center gap-1 transition-all hover:scale-105 ${
+                            localFilters.amenities?.includes(amenity.id)
+                              ? 'bg-rose-500 hover:bg-rose-600'
+                              : 'hover:bg-gray-100'
+                          }`}
                           onClick={() =>
                             toggleArrayFilter('amenities', amenity.id)
                           }
@@ -369,17 +423,17 @@ export default function AdvancedFilters({
           <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
             <div>
               <h3 className="text-lg font-semibold mb-4 flex items-center gap-2">
-                <Star className="h-5 w-5" />
+                <Star className="h-5 w-5 text-yellow-500" />
                 Host Type
               </h3>
               <div className="space-y-3">
                 {hostTypes.map((host) => (
                   <Card
                     key={host.id}
-                    className={`cursor-pointer transition-all ${
+                    className={`cursor-pointer transition-all hover:shadow-md ${
                       localFilters.hostTypes?.includes(host.id)
                         ? 'ring-2 ring-rose-500 bg-rose-50'
-                        : 'hover:shadow-md'
+                        : 'hover:bg-gray-50'
                     }`}
                     onClick={() => toggleArrayFilter('hostTypes', host.id)}
                   >
@@ -396,17 +450,17 @@ export default function AdvancedFilters({
 
             <div>
               <h3 className="text-lg font-semibold mb-4 flex items-center gap-2">
-                <Zap className="h-5 w-5" />
+                <Zap className="h-5 w-5 text-purple-500" />
                 Booking Options
               </h3>
               <div className="space-y-3">
                 {bookingOptions.map((option) => (
                   <Card
                     key={option.id}
-                    className={`cursor-pointer transition-all ${
+                    className={`cursor-pointer transition-all hover:shadow-md ${
                       localFilters.bookingOptions?.includes(option.id)
                         ? 'ring-2 ring-rose-500 bg-rose-50'
-                        : 'hover:shadow-md'
+                        : 'hover:bg-gray-50'
                     }`}
                     onClick={() =>
                       toggleArrayFilter('bookingOptions', option.id)
@@ -437,7 +491,11 @@ export default function AdvancedFilters({
                     localFilters.rating === rating ? 'default' : 'outline'
                   }
                   onClick={() => setLocalFilters({ ...localFilters, rating })}
-                  className="flex items-center gap-1"
+                  className={`flex items-center gap-1 ${
+                    localFilters.rating === rating
+                      ? 'bg-rose-500 hover:bg-rose-600'
+                      : ''
+                  }`}
                 >
                   <Star className="h-4 w-4" />
                   {rating === 0 ? 'Any' : `${rating}+`}
@@ -449,16 +507,24 @@ export default function AdvancedFilters({
 
         {/* Footer */}
         <div className="flex items-center justify-between p-6 border-t bg-gray-50">
-          <Button variant="outline" onClick={resetFilters}>
+          <Button
+            variant="outline"
+            onClick={resetFilters}
+            className="border-gray-300 hover:bg-gray-100"
+          >
             Clear All
           </Button>
           <div className="flex items-center space-x-4">
-            <Button variant="outline" onClick={onClose}>
+            <Button
+              variant="outline"
+              onClick={onClose}
+              className="border-gray-300 hover:bg-gray-100"
+            >
               Cancel
             </Button>
             <Button
               onClick={applyFilters}
-              className="bg-rose-500 hover:bg-rose-600"
+              className="bg-rose-500 hover:bg-rose-600 text-white px-6"
             >
               Apply Filters
             </Button>
