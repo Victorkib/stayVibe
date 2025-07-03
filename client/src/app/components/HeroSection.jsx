@@ -422,7 +422,7 @@ export default function HeroSection() {
               }`}
             >
               Discover unique homes, experiences, and places around the world
-              with StayVibe
+              with DewdropBnb
             </p>
 
             {!showVideoPreview && (

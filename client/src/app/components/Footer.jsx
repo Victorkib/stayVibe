@@ -137,7 +137,7 @@ export default function Footer() {
           {/* Company Info */}
           <div>
             <h3 className="text-2xl font-bold bg-gradient-to-r from-rose-400 to-pink-500 bg-clip-text text-transparent mb-4">
-              StayVibe
+              DewdropBnb
             </h3>
             <p className="text-gray-300 mb-4">
               Discover unique homes, experiences, and places around the world.
@@ -275,7 +275,7 @@ export default function Footer() {
             <div className="space-y-3">
               <div className="flex items-center space-x-3">
                 <Mail className="h-5 w-5 text-rose-400 flex-shrink-0" />
-                <span className="text-gray-300">support@stayvibe.com</span>
+                <span className="text-gray-300">support@DewdropBnb.com</span>
               </div>
               <div className="flex items-center space-x-3">
                 <Phone className="h-5 w-5 text-rose-400 flex-shrink-0" />
@@ -293,7 +293,7 @@ export default function Footer() {
         <div className="border-t border-gray-800 pt-8">
           <div className="flex flex-col md:flex-row justify-between items-center space-y-4 md:space-y-0">
             <div className="text-gray-400 text-sm">
-              © 2024 StayVibe. All rights reserved.
+              © 2024 DewdropBnb. All rights reserved.
             </div>
             <div className="flex flex-wrap justify-center md:justify-end space-x-6 text-sm">
               <button

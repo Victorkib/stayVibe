@@ -1,4 +1,4 @@
-// Centralized Mock Data for StayVibe Application
+// Centralized Mock Data for DewdropBnb Application
 // This file contains all dummy data used across the application
 
 // Host profiles
@@ -82,7 +82,7 @@ export const mockHostStories = [
     location: 'New York, NY',
     image: '/user.png',
     story:
-      'I started with just one room and now manage 3 properties. StayVibe made it incredibly easy to get started.',
+      'I started with just one room and now manage 3 properties. DewdropBnb made it incredibly easy to get started.',
     earnings: '$3,800/month',
     rating: 4.8,
     properties: 3,

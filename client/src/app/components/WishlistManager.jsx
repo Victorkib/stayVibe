@@ -31,7 +31,7 @@ export default function WishlistManager() {
     if (navigator.share) {
       navigator.share({
         title: 'My Travel Wishlist',
-        text: 'Check out my travel wishlist on StayVibe!',
+        text: 'Check out my travel wishlist on DewdropBnb!',
         url: window.location.href,
       });
     } else {

@@ -112,7 +112,7 @@ export default function RegisterPage() {
           className="inline-flex items-center text-gray-600 hover:text-gray-900 mb-6"
         >
           <ArrowLeft className="h-4 w-4 mr-2" />
-          Back to StayVibe
+          Back to DewdropBnb
         </Link>
 
         <Card className="shadow-2xl border-0">
@@ -121,7 +121,7 @@ export default function RegisterPage() {
               <Sparkles className="h-8 w-8 text-white" />
             </div>
             <CardTitle className="text-2xl font-bold text-gray-900">
-              Join StayVibe
+              Join DewdropBnb
             </CardTitle>
             <p className="text-gray-600">
               Create your account and start exploring

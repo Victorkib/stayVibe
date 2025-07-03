@@ -100,7 +100,7 @@ const PaystackCheckout = ({
   const generateReference = () => {
     const timestamp = Date.now();
     const random = Math.random().toString(36).substring(2, 8);
-    return `stayvibe_${
+    return `DewdropBnb_${
       bookingData?.propertyId || 'prop'
     }_${timestamp}_${random}`;
   };

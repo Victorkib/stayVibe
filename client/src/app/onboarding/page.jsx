@@ -246,7 +246,7 @@ export default function OnboardingPage() {
             </div>
             <div>
               <h2 className="text-3xl font-bold text-gray-900 mb-4">
-                Welcome to StayVibe!
+                Welcome to DewdropBnb!
               </h2>
               <p className="text-xl text-gray-600 max-w-2xl mx-auto">
                 Let's create a personalized experience just for you. We'll use

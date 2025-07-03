@@ -153,7 +153,7 @@ export default function HelpPage() {
               <Mail className="h-12 w-12 text-green-500 mx-auto mb-4" />
               <h3 className="font-semibold text-lg mb-2">Email Support</h3>
               <p className="text-gray-600 mb-4">Send us a detailed message</p>
-              <Button variant="outline">support@stayvibe.com</Button>
+              <Button variant="outline">support@DewdropBnb.com</Button>
             </CardContent>
           </Card>
         </div>

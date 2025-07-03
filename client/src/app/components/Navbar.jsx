@@ -95,7 +95,7 @@ export default function Navbar({
               onClick={() => navigate('/')}
             >
               <h1 className="text-2xl font-bold bg-gradient-to-r from-rose-500 to-pink-600 bg-clip-text text-transparent group-hover:from-rose-600 group-hover:to-pink-700 transition-all duration-300">
-                StayVibe
+                DewdropBnb
               </h1>
             </div>
           </div>

@@ -182,7 +182,7 @@ export default function DashboardPage() {
                 className="text-2xl font-bold bg-gradient-to-r from-rose-500 to-pink-600 bg-clip-text text-transparent cursor-pointer"
                 onClick={() => navigate('/')}
               >
-                StayVibe
+                DewdropBnb
               </h1>
               <Badge
                 variant="secondary"
